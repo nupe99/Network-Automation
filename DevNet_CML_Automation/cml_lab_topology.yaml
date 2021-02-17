@@ -1,0 +1,3181 @@
+lab:
+  description: ''
+  notes: ''
+  timestamp: 1606849744.6048138
+  title: devnet lab - with routing.yaml
+  version: 0.0.3
+nodes:
+  - id: n0
+    label: A-SW1
+    node_definition: iosvl2
+    x: -950
+    y: 0
+    configuration: |-
+      Building configuration...
+
+      Current configuration : 4500 bytes
+      !
+      ! Last configuration change at 01:17:46 UTC Tue Dec 1 2020
+      !
+      version 15.2
+      service timestamps debug datetime msec
+      service timestamps log datetime msec
+      no service password-encryption
+      service compress-config
+      !
+      hostname A-SW1
+      !
+      boot-start-marker
+      boot-end-marker
+      !
+      !
+      vrf definition Mgmt-intf
+       !
+       address-family ipv4
+       exit-address-family
+       !
+       address-family ipv6
+       exit-address-family
+      !
+      no logging console
+      enable secret 5 $1$BXsS$cSsexaTLfJI6dNKyNKI8j1
+      enable password cisco
+      !
+      username admin password 0 cisco123
+      no aaa new-model
+      !
+      !
+      !
+      !
+      !
+      vtp domain virl.lab
+      vtp mode transparent
+      !
+      !
+      !
+      no ip domain-lookup
+      ip cef
+      no ipv6 cef
+      !
+      !
+      !
+      spanning-tree mode pvst
+      spanning-tree extend system-id
+      !
+      !
+      vlan 2
+       name ank_vlan2
+      !
+      vlan 100
+       name MGMT
+      no cdp run
+      !
+      !
+      !
+      !
+      !
+      !
+      !
+      !
+      !
+      !
+      !
+      !
+      !
+      !
+      interface Loopback0
+       description to
+       no ip address
+       shutdown
+      !
+      interface GigabitEthernet0/0
+       description to GigabitEthernet1/0.C-SW1
+       switchport trunk encapsulation dot1q
+       switchport mode trunk
+       duplex full
+       no negotiation auto
+      !
+      interface GigabitEthernet0/1
+       description to GigabitEthernet1/0.C-SW2
+       switchport trunk encapsulation dot1q
+       switchport mode trunk
+       duplex full
+       no negotiation auto
+      !
+      interface GigabitEthernet0/2
+       description to
+       no switchport
+       no ip address
+       shutdown
+       duplex full
+       no negotiation auto
+      !
+      interface GigabitEthernet0/3
+       description to
+       no switchport
+       no ip address
+       shutdown
+       duplex full
+       no negotiation auto
+      !
+      interface GigabitEthernet1/0
+       description to port1.unmanaged-switch-0
+       no switchport
+       vrf forwarding Mgmt-intf
+       ip address 10.10.20.21 255.255.255.0
+       duplex full
+       no negotiation auto
+      !
+      interface GigabitEthernet1/1
+       description to
+       no switchport
+       no ip address
+       shutdown
+       duplex full
+       no negotiation auto
+      !
+      interface GigabitEthernet1/2
+       description to
+       no switchport
+       no ip address
+       shutdown
+       duplex full
+       no negotiation auto
+      !
+      interface GigabitEthernet1/3
+       description to
+       no switchport
+       no ip address
+       shutdown
+       duplex full
+       no negotiation auto
+      !
+      interface GigabitEthernet2/0
+       description to
+       no switchport
+       no ip address
+       shutdown
+       duplex full
+       no negotiation auto
+      !
+      interface Vlan100
+       ip address 10.10.100.10 255.255.255.0
+      !
+      ip forward-protocol nd
+      !
+      no ip http server
+      no ip http secure-server
+      !
+      ip route 0.0.0.0 0.0.0.0 10.10.100.1
+      ip route vrf Mgmt-intf 0.0.0.0 0.0.0.0 10.10.20.254
+      ip ssh server algorithm encryption aes128-ctr aes192-ctr aes256-ctr
+      ip ssh client algorithm encryption aes128-ctr aes192-ctr aes256-ctr
+      !
+      !
+      !
+      !
+      !
+      !
+      control-plane
+      !
+      banner exec ^CCC
+      **************************************************************************
+      * IOSv is strictly limited to use for evaluation, demonstration and IOS  *
+      * education. IOSv is provided as-is and is not supported by Cisco's      *
+      * Technical Advisory Center. Any use or disclosure, in whole or in part, *
+      * of the IOSv Software or Documentation to any third party for any       *
+      * purposes is expressly prohibited except as otherwise authorized by     *
+      * Cisco in writing.                                                      *
+      **************************************************************************^C
+      banner incoming ^CCC
+      **************************************************************************
+      * IOSv is strictly limited to use for evaluation, demonstration and IOS  *
+      * education. IOSv is provided as-is and is not supported by Cisco's      *
+      * Technical Advisory Center. Any use or disclosure, in whole or in part, *
+      * of the IOSv Software or Documentation to any third party for any       *
+      * purposes is expressly prohibited except as otherwise authorized by     *
+      * Cisco in writing.                                                      *
+      **************************************************************************^C
+      banner login ^CCC
+      **************************************************************************
+      * IOSv is strictly limited to use for evaluation, demonstration and IOS  *
+      * education. IOSv is provided as-is and is not supported by Cisco's      *
+      * Technical Advisory Center. Any use or disclosure, in whole or in part, *
+      * of the IOSv Software or Documentation to any third party for any       *
+      * purposes is expressly prohibited except as otherwise authorized by     *
+      * Cisco in writing.                                                      *
+      **************************************************************************^C
+      !
+      line con 0
+       exec-timeout 0 0
+       password cisco
+      line aux 0
+      line vty 0 4
+       exec-timeout 720 0
+       password cisco
+       login local
+       transport input telnet ssh
+      line vty 5 16
+       login local
+      !
+      !
+      end
+    image_definition: iosvl2-2019
+    tags: []
+    interfaces:
+      - id: i0
+        label: Loopback0
+        type: loopback
+      - id: i1
+        slot: 0
+        label: GigabitEthernet0/0
+        type: physical
+      - id: i2
+        slot: 1
+        label: GigabitEthernet0/1
+        type: physical
+      - id: i3
+        slot: 2
+        label: GigabitEthernet0/2
+        type: physical
+      - id: i4
+        slot: 3
+        label: GigabitEthernet0/3
+        type: physical
+      - id: i5
+        slot: 4
+        label: GigabitEthernet1/0
+        type: physical
+      - id: i6
+        slot: 5
+        label: GigabitEthernet1/1
+        type: physical
+      - id: i7
+        slot: 6
+        label: GigabitEthernet1/2
+        type: physical
+      - id: i8
+        slot: 7
+        label: GigabitEthernet1/3
+        type: physical
+      - id: i9
+        slot: 8
+        label: GigabitEthernet2/0
+        type: physical
+  - id: n1
+    label: C-SW1
+    node_definition: iosvl2
+    x: -800
+    y: 0
+    configuration: |-
+      Building configuration...
+
+      Current configuration : 5360 bytes
+      !
+      ! Last configuration change at 19:26:55 UTC Tue Dec 1 2020
+      !
+      version 15.2
+      service timestamps debug datetime msec
+      service timestamps log datetime msec
+      no service password-encryption
+      service compress-config
+      !
+      hostname C-SW1
+      !
+      boot-start-marker
+      boot-end-marker
+      !
+      !
+      vrf definition Mgmt-intf
+       !
+       address-family ipv4
+       exit-address-family
+       !
+       address-family ipv6
+       exit-address-family
+      !
+      no logging console
+      enable secret 5 $1$o43U$ttIq/TOBI2wiYk08qvFQY1
+      enable password cisco
+      !
+      username admin password 0 cisco123
+      no aaa new-model
+      !
+      !
+      !
+      !
+      !
+      vtp domain virl.lab
+      vtp mode transparent
+      !
+      !
+      !
+      no ip domain-lookup
+      ip cef
+      no ipv6 cef
+      !
+      !
+      !
+      spanning-tree mode pvst
+      spanning-tree extend system-id
+      !
+      !
+      vlan 2
+       name ank_vlan2
+      !
+      vlan 10
+      !
+      vlan 30
+       name USERS
+      !
+      vlan 40
+       name SERVERS
+      !
+      vlan 50
+       name INFRA
+      !
+      vlan 60
+       name VOIP
+      !
+      vlan 100
+       name MGMT
+      !
+      vlan 101
+       name Core_Switch_Link
+      !
+      !
+      !
+      !
+      !
+      !
+      !
+      !
+      !
+      !
+      !
+      !
+      !
+      !
+      interface Loopback0
+       description to
+       ip address 3.3.3.3 255.255.255.255
+       shutdown
+      !
+      interface Port-channel1
+       switchport trunk encapsulation dot1q
+       switchport mode trunk
+      !
+      interface GigabitEthernet0/0
+       description to GigabitEthernet0/0.C-SW2
+       switchport trunk encapsulation dot1q
+       switchport mode trunk
+       duplex full
+       no negotiation auto
+       channel-group 1 mode active
+      !
+      interface GigabitEthernet0/1
+       description to GigabitEthernet0/1.C-SW2
+       switchport trunk encapsulation dot1q
+       switchport mode trunk
+       duplex full
+       no negotiation auto
+       channel-group 1 mode active
+      !
+      interface GigabitEthernet0/2
+       description C-SW1_to_RT1
+       no switchport
+       ip address 10.10.10.2 255.255.255.0
+       duplex full
+       no negotiation auto
+      !
+      interface GigabitEthernet0/3
+       description to
+       no switchport
+       no ip address
+       shutdown
+       duplex full
+       no negotiation auto
+      !
+      interface GigabitEthernet1/0
+       description to GigabitEthernet0/0.A-SW1
+       switchport trunk encapsulation dot1q
+       switchport mode trunk
+       duplex full
+       no negotiation auto
+      !
+      interface GigabitEthernet1/1
+       description to GigabitEthernet1/0.A-SW2
+       switchport trunk encapsulation dot1q
+       switchport mode trunk
+       duplex full
+       no negotiation auto
+      !
+      interface GigabitEthernet1/2
+       description to port3.unmanaged-switch-0
+       no switchport
+       vrf forwarding Mgmt-intf
+       ip address 10.10.20.23 255.255.255.0
+       duplex full
+       no negotiation auto
+       no cdp tlv app
+      !
+      interface Vlan30
+       description USERS
+       ip address 10.10.30.2 255.255.255.0
+       standby 1 ip 10.10.30.1
+      !
+      interface Vlan40
+       description SERVERS
+       ip address 10.10.40.2 255.255.255.0
+       standby 1 ip 10.10.40.1
+      !
+      interface Vlan50
+       description INFRA
+       ip address 10.10.50.2 255.255.255.0
+       standby 1 ip 10.10.50.1
+      !
+      interface Vlan60
+       description VOIP
+       ip address 10.10.60.2 255.255.255.0
+       standby 1 ip 10.10.60.1
+      !
+      interface Vlan100
+       description MGMT
+       ip address 10.10.100.2 255.255.255.0
+       standby 1 ip 10.10.100.1
+      !
+      interface Vlan101
+       description Core Switch link
+       ip address 10.10.101.1 255.255.255.0
+      !
+      router ospf 1
+       passive-interface Vlan30
+       passive-interface Vlan40
+       passive-interface Vlan50
+       passive-interface Vlan60
+       passive-interface Vlan100
+       network 10.10.0.0 0.0.255.255 area 0
+      !
+      ip forward-protocol nd
+      !
+      no ip http server
+      no ip http secure-server
+      !
+      ip route vrf Mgmt-intf 0.0.0.0 0.0.0.0 10.10.20.254
+      ip ssh server algorithm encryption aes128-ctr aes192-ctr aes256-ctr
+      ip ssh client algorithm encryption aes128-ctr aes192-ctr aes256-ctr
+      !
+      !
+      !
+      !
+      !
+      !
+      control-plane
+      !
+      banner exec ^CCCC
+      **************************************************************************
+      * IOSv is strictly limited to use for evaluation, demonstration and IOS  *
+      * education. IOSv is provided as-is and is not supported by Cisco's      *
+      * Technical Advisory Center. Any use or disclosure, in whole or in part, *
+      * of the IOSv Software or Documentation to any third party for any       *
+      * purposes is expressly prohibited except as otherwise authorized by     *
+      * Cisco in writing.                                                      *
+      **************************************************************************^C
+      banner incoming ^CCCC
+      **************************************************************************
+      * IOSv is strictly limited to use for evaluation, demonstration and IOS  *
+      * education. IOSv is provided as-is and is not supported by Cisco's      *
+      * Technical Advisory Center. Any use or disclosure, in whole or in part, *
+      * of the IOSv Software or Documentation to any third party for any       *
+      * purposes is expressly prohibited except as otherwise authorized by     *
+      * Cisco in writing.                                                      *
+      **************************************************************************^C
+      banner login ^CCCC
+      **************************************************************************
+      * IOSv is strictly limited to use for evaluation, demonstration and IOS  *
+      * education. IOSv is provided as-is and is not supported by Cisco's      *
+      * Technical Advisory Center. Any use or disclosure, in whole or in part, *
+      * of the IOSv Software or Documentation to any third party for any       *
+      * purposes is expressly prohibited except as otherwise authorized by     *
+      * Cisco in writing.                                                      *
+      **************************************************************************^C
+      !
+      line con 0
+       exec-timeout 0 0
+       password cisco
+      line aux 0
+      line vty 0 4
+       exec-timeout 720 0
+       password cisco
+       login local
+       transport input telnet ssh
+      line vty 5 16
+       login local
+      !
+      !
+      end
+    image_definition: iosvl2-2019
+    tags: []
+    interfaces:
+      - id: i0
+        label: Loopback0
+        type: loopback
+      - id: i1
+        slot: 0
+        label: GigabitEthernet0/0
+        type: physical
+      - id: i2
+        slot: 1
+        label: GigabitEthernet0/1
+        type: physical
+      - id: i3
+        slot: 2
+        label: GigabitEthernet0/2
+        type: physical
+      - id: i4
+        slot: 3
+        label: GigabitEthernet0/3
+        type: physical
+      - id: i5
+        slot: 4
+        label: GigabitEthernet1/0
+        type: physical
+      - id: i6
+        slot: 5
+        label: GigabitEthernet1/1
+        type: physical
+      - id: i7
+        slot: 6
+        label: GigabitEthernet1/2
+        type: physical
+  - id: n2
+    label: C-SW2
+    node_definition: iosvl2
+    x: -800
+    y: 150
+    configuration: |-
+      Building configuration...
+
+      Current configuration : 5214 bytes
+      !
+      ! Last configuration change at 19:29:47 UTC Tue Dec 1 2020
+      !
+      version 15.2
+      service timestamps debug datetime msec
+      service timestamps log datetime msec
+      no service password-encryption
+      service compress-config
+      !
+      hostname C-SW2
+      !
+      boot-start-marker
+      boot-end-marker
+      !
+      !
+      vrf definition Mgmt-intf
+       !
+       address-family ipv4
+       exit-address-family
+       !
+       address-family ipv6
+       exit-address-family
+      !
+      no logging console
+      enable secret 5 $1$M8ge$AC.LEQOOZUBfX0vHr50rU/
+      enable password cisco
+      !
+      username admin password 0 cisco123
+      no aaa new-model
+      !
+      !
+      !
+      !
+      !
+      vtp domain virl.lab
+      vtp mode transparent
+      !
+      !
+      !
+      no ip domain-lookup
+      ip cef
+      no ipv6 cef
+      !
+      !
+      !
+      spanning-tree mode pvst
+      spanning-tree extend system-id
+      !
+      !
+      vlan 2
+       name ank_vlan2
+      !
+      vlan 20
+      !
+      vlan 30
+       name USERS
+      !
+      vlan 40
+       name SERVERS
+      !
+      vlan 50
+       name INFRA
+      !
+      vlan 60
+       name VOIP
+      !
+      vlan 100
+       name MGMT
+      !
+      vlan 101
+       name Core_Switch_Link
+      no cdp run
+      !
+      !
+      !
+      !
+      !
+      !
+      !
+      !
+      !
+      !
+      !
+      !
+      !
+      !
+      interface Loopback0
+       description to
+       ip address 4.4.4.4 255.255.255.255
+      !
+      interface Port-channel1
+       switchport trunk encapsulation dot1q
+       switchport mode trunk
+      !
+      interface GigabitEthernet0/0
+       description to GigabitEthernet0/0.C-SW1
+       switchport trunk encapsulation dot1q
+       switchport mode trunk
+       duplex full
+       no negotiation auto
+       channel-group 1 mode active
+      !
+      interface GigabitEthernet0/1
+       description to GigabitEthernet0/1.C-SW1
+       switchport trunk encapsulation dot1q
+       switchport mode trunk
+       duplex full
+       no negotiation auto
+       channel-group 1 mode active
+      !
+      interface GigabitEthernet0/2
+       description C-SW1_to_RT1
+       no switchport
+       ip address 10.10.20.2 255.255.255.0
+       duplex full
+       no negotiation auto
+      !
+      interface GigabitEthernet0/3
+       description to
+       no switchport
+       no ip address
+       shutdown
+       duplex full
+       no negotiation auto
+      !
+      interface GigabitEthernet1/0
+       description to GigabitEthernet0/1.A-SW1
+       switchport trunk encapsulation dot1q
+       switchport mode trunk
+       duplex full
+       no negotiation auto
+      !
+      interface GigabitEthernet1/1
+       description to GigabitEthernet1/1.A-SW2
+       switchport trunk encapsulation dot1q
+       switchport mode trunk
+       duplex full
+       no negotiation auto
+      !
+      interface GigabitEthernet1/2
+       description to port5.unmanaged-switch-0
+       no switchport
+       vrf forwarding Mgmt-intf
+       ip address 10.10.20.24 255.255.255.0
+       duplex full
+       no negotiation auto
+      !
+      interface Vlan30
+       description USERS
+       ip address 10.10.30.3 255.255.255.0
+       standby 1 ip 10.10.30.1
+      !
+      interface Vlan40
+       description SERVERS
+       ip address 10.10.40.3 255.255.255.0
+       standby 1 ip 10.10.40.1
+      !
+      interface Vlan50
+       description INFRA
+       ip address 10.10.50.3 255.255.255.0
+       standby 1 ip 10.10.50.1
+      !
+      interface Vlan60
+       description VOIP
+       ip address 10.10.60.3 255.255.255.0
+       standby 1 ip 10.10.60.1
+      !
+      interface Vlan100
+       description MGMT
+       ip address 10.10.100.3 255.255.255.0
+       standby 1 ip 10.10.100.1
+      !
+      interface Vlan101
+       description Core Switch link
+       ip address 10.10.101.2 255.255.255.0
+      !
+      router ospf 1
+       network 10.10.0.0 0.0.255.255 area 0
+      !
+      ip forward-protocol nd
+      !
+      no ip http server
+      no ip http secure-server
+      !
+      ip route vrf Mgmt-intf 0.0.0.0 0.0.0.0 10.10.20.254
+      ip ssh server algorithm encryption aes128-ctr aes192-ctr aes256-ctr
+      ip ssh client algorithm encryption aes128-ctr aes192-ctr aes256-ctr
+      !
+      !
+      !
+      !
+      !
+      !
+      control-plane
+      !
+      banner exec ^CCCC
+      **************************************************************************
+      * IOSv is strictly limited to use for evaluation, demonstration and IOS  *
+      * education. IOSv is provided as-is and is not supported by Cisco's      *
+      * Technical Advisory Center. Any use or disclosure, in whole or in part, *
+      * of the IOSv Software or Documentation to any third party for any       *
+      * purposes is expressly prohibited except as otherwise authorized by     *
+      * Cisco in writing.                                                      *
+      **************************************************************************^C
+      banner incoming ^CCCC
+      **************************************************************************
+      * IOSv is strictly limited to use for evaluation, demonstration and IOS  *
+      * education. IOSv is provided as-is and is not supported by Cisco's      *
+      * Technical Advisory Center. Any use or disclosure, in whole or in part, *
+      * of the IOSv Software or Documentation to any third party for any       *
+      * purposes is expressly prohibited except as otherwise authorized by     *
+      * Cisco in writing.                                                      *
+      **************************************************************************^C
+      banner login ^CCCC
+      **************************************************************************
+      * IOSv is strictly limited to use for evaluation, demonstration and IOS  *
+      * education. IOSv is provided as-is and is not supported by Cisco's      *
+      * Technical Advisory Center. Any use or disclosure, in whole or in part, *
+      * of the IOSv Software or Documentation to any third party for any       *
+      * purposes is expressly prohibited except as otherwise authorized by     *
+      * Cisco in writing.                                                      *
+      **************************************************************************^C
+      !
+      line con 0
+       exec-timeout 0 0
+       password cisco
+      line aux 0
+      line vty 0 4
+       exec-timeout 720 0
+       password cisco
+       login local
+       transport input telnet ssh
+      line vty 5 16
+       login local
+      !
+      !
+      end
+    image_definition: iosvl2-2019
+    tags: []
+    interfaces:
+      - id: i0
+        label: Loopback0
+        type: loopback
+      - id: i1
+        slot: 0
+        label: GigabitEthernet0/0
+        type: physical
+      - id: i2
+        slot: 1
+        label: GigabitEthernet0/1
+        type: physical
+      - id: i3
+        slot: 2
+        label: GigabitEthernet0/2
+        type: physical
+      - id: i4
+        slot: 3
+        label: GigabitEthernet0/3
+        type: physical
+      - id: i5
+        slot: 4
+        label: GigabitEthernet1/0
+        type: physical
+      - id: i6
+        slot: 5
+        label: GigabitEthernet1/1
+        type: physical
+      - id: i7
+        slot: 6
+        label: GigabitEthernet1/2
+        type: physical
+  - id: n3
+    label: RT1
+    node_definition: csr1000v
+    x: -650
+    y: 0
+    configuration: "Building configuration...\n\nCurrent configuration : 7329 bytes\n\
+      !\n! Last configuration change at 19:56:33 UTC Tue Dec 1 2020\n!\nversion 16.11\n\
+      service timestamps debug datetime msec\nservice timestamps log datetime msec\n\
+      service call-home\nplatform qfp utilization monitor load 80\nno platform punt-keepalive\
+      \ disable-kernel-core\nplatform console serial\n!\nhostname RT1\n!\nboot-start-marker\n\
+      boot-end-marker\n!\n!\nno logging console\nenable secret 9 $9$Easd0MNAGSCP0E$gVep.S31XLdWWmVxZdDxhCmc9/zTRgr3gg3AqZ8Z3lc\n\
+      enable password cisco\n!\nno aaa new-model\ncall-home\n ! If contact email address\
+      \ in call-home is configured as sch-smart-licensing@cisco.com\n ! the email\
+      \ address configured in Cisco Smart License Portal will be used as contact email\
+      \ address to send SCH notifications.\n contact-email-addr sch-smart-licensing@cisco.com\n\
+      \ profile \"CiscoTAC-1\"\n  active\n  destination transport-method http\n  no\
+      \ destination transport-method email\n!\nip vrf Mgmt-intf\n!\n!\n!\n!\n!\n!\n\
+      !\nno ip domain lookup\nip domain name virl.info\n!\n!\n!\nlogin on-success\
+      \ log\n!\n!\n!\n!\n!\n!\n!\nsubscriber templating\n!\n!\n!\n!\n!\n!\nmultilink\
+      \ bundle-name authenticated\n!\n!\n!\n!\n!\n!\n!\n!\n!\n!\n!\n!\n!\ncrypto pki\
+      \ trustpoint SLA-TrustPoint\n enrollment pkcs12\n revocation-check crl\n!\n\
+      crypto pki trustpoint TP-self-signed-411727927\n enrollment selfsigned\n subject-name\
+      \ cn=IOS-Self-Signed-Certificate-411727927\n revocation-check none\n rsakeypair\
+      \ TP-self-signed-411727927\n!\n!\ncrypto pki certificate chain SLA-TrustPoint\n\
+      \ certificate ca 01\n  30820321 30820209 A0030201 02020101 300D0609 2A864886\
+      \ F70D0101 0B050030\n  32310E30 0C060355 040A1305 43697363 6F312030 1E060355\
+      \ 04031317 43697363\n  6F204C69 63656E73 696E6720 526F6F74 20434130 1E170D31\
+      \ 33303533 30313934\n  3834375A 170D3338 30353330 31393438 34375A30 32310E30\
+      \ 0C060355 040A1305\n  43697363 6F312030 1E060355 04031317 43697363 6F204C69\
+      \ 63656E73 696E6720\n  526F6F74 20434130 82012230 0D06092A 864886F7 0D010101\
+      \ 05000382 010F0030\n  82010A02 82010100 A6BCBD96 131E05F7 145EA72C 2CD686E6\
+      \ 17222EA1 F1EFF64D\n  CBB4C798 212AA147 C655D8D7 9471380D 8711441E 1AAF071A\
+      \ 9CAE6388 8A38E520\n  1C394D78 462EF239 C659F715 B98C0A59 5BBB5CBD 0CFEBEA3\
+      \ 700A8BF7 D8F256EE\n  4AA4E80D DB6FD1C9 60B1FD18 FFC69C96 6FA68957 A2617DE7\
+      \ 104FDC5F EA2956AC\n  7390A3EB 2B5436AD C847A2C5 DAB553EB 69A9A535 58E9F3E3\
+      \ C0BD23CF 58BD7188\n  68E69491 20F320E7 948E71D7 AE3BCC84 F10684C7 4BC8E00F\
+      \ 539BA42B 42C68BB7\n  C7479096 B4CB2D62 EA2F505D C7B062A4 6811D95B E8250FC4\
+      \ 5D5D5FB8 8F27D191\n  C55F0D76 61F9A4CD 3D992327 A8BB03BD 4E6D7069 7CBADF8B\
+      \ DF5F4368 95135E44\n  DFC7C6CF 04DD7FD1 02030100 01A34230 40300E06 03551D0F\
+      \ 0101FF04 04030201\n  06300F06 03551D13 0101FF04 05300301 01FF301D 0603551D\
+      \ 0E041604 1449DC85\n  4B3D31E5 1B3E6A17 606AF333 3D3B4C73 E8300D06 092A8648\
+      \ 86F70D01 010B0500\n  03820101 00507F24 D3932A66 86025D9F E838AE5C 6D4DF6B0\
+      \ 49631C78 240DA905\n  604EDCDE FF4FED2B 77FC460E CD636FDB DD44681E 3A5673AB\
+      \ 9093D3B1 6C9E3D8B\n  D98987BF E40CBD9E 1AECA0C2 2189BB5C 8FA85686 CD98B646\
+      \ 5575B146 8DFC66A8\n  467A3DF4 4D565700 6ADF0F0D CF835015 3C04FF7C 21E878AC\
+      \ 11BA9CD2 55A9232C\n  7CA7B7E6 C1AF74F6 152E99B7 B1FCF9BB E973DE7F 5BDDEB86\
+      \ C71E3B49 1765308B\n  5FB0DA06 B92AFE7F 494E8A9E 07B85737 F3A58BE1 1A48A229\
+      \ C37C1E69 39F08678\n  80DDCD16 D6BACECA EEBC7CF9 8428787B 35202CDC 60E4616A\
+      \ B623CDBD 230E3AFB\n  418616A9 4093E049 4D10AB75 27E86F73 932E35B5 8862FDAE\
+      \ 0275156F 719BB2F0\n  D697DF7F 28\n  \tquit\ncrypto pki certificate chain TP-self-signed-411727927\n\
+      \ certificate self-signed 01\n  3082032E 30820216 A0030201 02020101 300D0609\
+      \ 2A864886 F70D0101 05050030\n  30312E30 2C060355 04031325 494F532D 53656C66\
+      \ 2D536967 6E65642D 43657274\n  69666963 6174652D 34313137 32373932 37301E17\
+      \ 0D323031 31333032 30333735\n  365A170D 33303031 30313030 30303030 5A303031\
+      \ 2E302C06 03550403 1325494F\n  532D5365 6C662D53 69676E65 642D4365 72746966\
+      \ 69636174 652D3431 31373237\n  39323730 82012230 0D06092A 864886F7 0D010101\
+      \ 05000382 010F0030 82010A02\n  82010100 E747D964 66A4A837 007E4248 C43D99E0\
+      \ DFE461CA 067CD74C 014EDAB0\n  B99C0A78 2D4D473C 52EF5B6A 9B5CD956 73B85315\
+      \ 445FD2CF 83E7CF5C 7A188B8E\n  13F656F8 661D9F70 3167F886 DC557850 F894E905\
+      \ EBA9D0CC 28C42AAA DC7583BE\n  88EEC80B D51B11EC FCACC75D CC80D91A 4901BA32\
+      \ 9A3A77B8 EE352816 925CD78A\n  E16EE751 C4236675 09945218 C676E538 1AAB8C78\
+      \ 7CC787FB F047FF86 C0CF699E\n  8730972C 4A332997 A9E12572 0ADF9F08 0315E133\
+      \ AD9522B1 402D85D2 72FE15E0\n  869D4CA1 5650CE74 F26B6D0F 03850F44 72E6BC03\
+      \ 97B5E1B9 740DC08D 1803B6F1\n  7151A7FC 1824B321 A8595598 C3AFA34D 15F38576\
+      \ C2285E8C 1479629B 50BE5AE8\n  C59E0E41 02030100 01A35330 51300F06 03551D13\
+      \ 0101FF04 05300301 01FF301F\n  0603551D 23041830 168014BB F5A3A501 066573AE\
+      \ 9E62310B 1809E62D 67614930\n  1D060355 1D0E0416 0414BBF5 A3A50106 6573AE9E\
+      \ 62310B18 09E62D67 6149300D\n  06092A86 4886F70D 01010505 00038201 010062A1\
+      \ FA8A7927 99C4C00B 4202BB2B\n  17001A4C 91CF3264 52B3B1DB B61DACAB F465644E\
+      \ 159095BB E36EEF53 EB7FA647\n  9BBD5D13 2622EFAD 7B47CC6B 67572D0C A12A9D74\
+      \ D970582B 2229617E D5BF5458\n  D56E33B5 9BD3AA2B EC88265B DA15D7FD AA4B17C5\
+      \ 7A34E474 BC527FE1 88661C79\n  8FC43FD0 1815A4DE C8A6A6AA 14810D76 085F9C76\
+      \ C630BDB9 1B5D02C4 33957E5A\n  2554CA30 7DE6EF01 058855B1 9360DAB0 6C8AB4B8\
+      \ C8B3DDE2 21D7E956 BC6EEE87\n  2BDE4B57 2AB5FCD8 561B81EB 31AFB026 DA6A7A65\
+      \ 7CED75A3 5DFD7907 647AEB33\n  E8E4EF6F 4CD7B37C 90E5952C B95C49ED EAB0ED66\
+      \ 38A4DBF2 186924FC B04859F8\n  AA2DDA03 5166023E B31AB468 967D6D6F F4F4\n \
+      \ \tquit\n!\nlicense udi pid CSR1000V sn 9DAX5NCN4LM\ndiagnostic bootup level\
+      \ minimal\n!\nspanning-tree extend system-id\nmemory free low-watermark processor\
+      \ 80526\n!\n!\n!\nusername cisco privilege 15 secret 9 $9$RyNJ3Ye5wpzc9E$9zTFE/KPUm5frxBq3roUe3mPr6wlK76faZAlN08jldA\n\
+      username admin password 0 cisco123\n!\nredundancy\n!\n!\n!\n!\n!\n!\ncdp run\n\
+      !\n!\n!\n!\n!\n!\n!\n!\n!\n!\n!\n!\n!\n!\n!\n!\n!\ninterface Loopback0\n description\
+      \ to\n ip address 5.5.5.5 255.255.255.255\n no shutdown\n!\ninterface Tunnel0\n ip address\
+      \ 172.16.0.2 255.255.255.0\n no ip redirects\n ip nhrp map multicast 192.168.4.2\n\
+      \ ip nhrp map 172.16.0.1 192.168.4.2\n ip nhrp network-id 10\n ip nhrp nhs 172.16.0.1\n\
+      \ ip nhrp redirect\n tunnel source GigabitEthernet2\n tunnel mode gre multipoint\n no shutdown\n\
+      !\ninterface GigabitEthernet1\n description to GigabitEthernet0/2.C-SW1\n ip\
+      \ address 10.10.10.1 255.255.255.0\n negotiation auto\n no mop enabled\n no\
+      \ mop sysid\n no shutdown\n!\ninterface GigabitEthernet2\n description to GigabitEthernet0/0.iosv-0\n\
+      \ ip address 192.168.0.2 255.255.255.252\n negotiation auto\n no mop enabled\n\
+      \ no mop sysid\n no shutdown\n!\ninterface GigabitEthernet3\n description to GigabitEthernet3.RT2\n\
+      \ ip address 10.10.70.1 255.255.255.252\n negotiation auto\n no mop enabled\n\
+      \ no mop sysid\n no shutdown\n!\ninterface GigabitEthernet4\n description to port4.unmanaged-switch-0\n\
+      \ ip vrf forwarding Mgmt-intf\n ip address 10.10.20.25 255.255.255.0\n negotiation\
+      \ auto\n no mop enabled\n no mop sysid\n no shutdown\n!\nrouter ospf 1\n redistribute bgp\
+      \ 65535 tag 50\n network 5.5.5.5 0.0.0.0 area 0\n network 10.10.0.0 0.0.255.255\
+      \ area 0\n!\nrouter bgp 65535\n bgp log-neighbor-changes\n bgp redistribute-internal\n\
+      \ redistribute ospf 1\n neighbor 172.16.0.1 remote-as 65535\n distance bgp 20\
+      \ 20 20\n!\nip forward-protocol nd\nno ip http server\nip http secure-server\n\
+      ip route 192.168.0.0 255.255.0.0 192.168.0.1\nip route vrf Mgmt-intf 0.0.0.0 0.0.0.0 10.10.20.254\n!\nip ssh server algorithm authentication\
+      \ password\n!\n!\n!\n!\n!\n!\n!\ncontrol-plane\n!\n!\n!\n!\n!\n!\nline con 0\n\
+      \ exec-timeout 0 0\n password cisco\n stopbits 1\nline vty 0 4\n exec-timeout\
+      \ 720 0\n password cisco\n login local\n transport input telnet ssh\nline vty\
+      \ 5 16\n login local\n!\n!\n!\n!\n!\n!\nend"
+    image_definition: csr1000v-161101b
+    tags: []
+    interfaces:
+      - id: i0
+        label: Loopback0
+        type: loopback
+      - id: i1
+        slot: 0
+        label: GigabitEthernet1
+        type: physical
+      - id: i2
+        slot: 1
+        label: GigabitEthernet2
+        type: physical
+      - id: i3
+        slot: 2
+        label: GigabitEthernet3
+        type: physical
+      - id: i4
+        slot: 3
+        label: GigabitEthernet4
+        type: physical
+  - id: n4
+    label: RT2
+    node_definition: csr1000v
+    x: -650
+    y: 150
+    configuration: "Building configuration...\n\nCurrent configuration : 7312 bytes\n\
+      !\n! Last configuration change at 19:56:30 UTC Tue Dec 1 2020\n!\nversion 16.11\n\
+      service timestamps debug datetime msec\nservice timestamps log datetime msec\n\
+      service call-home\nplatform qfp utilization monitor load 80\nno platform punt-keepalive\
+      \ disable-kernel-core\nplatform console serial\n!\nhostname RT2\n!\nboot-start-marker\n\
+      boot-end-marker\n!\n!\nno logging console\nenable secret 9 $9$jvon96Vhw2tCX.$j6Am0YTOOqvbixzrAaZOoHhXq3IOfjRxBWojEHmY8no\n\
+      enable password cisco\n!\nno aaa new-model\ncall-home\n ! If contact email address\
+      \ in call-home is configured as sch-smart-licensing@cisco.com\n ! the email\
+      \ address configured in Cisco Smart License Portal will be used as contact email\
+      \ address to send SCH notifications.\n contact-email-addr sch-smart-licensing@cisco.com\n\
+      \ profile \"CiscoTAC-1\"\n  active\n  destination transport-method http\n  no\
+      \ destination transport-method email\n!\nip vrf Mgmt-intf\n!\n!\n!\n!\n!\n!\n\
+      !\nno ip domain lookup\nip domain name virl.info\n!\n!\n!\nlogin on-success\
+      \ log\n!\n!\n!\n!\n!\n!\n!\nsubscriber templating\n!\n!\n!\n!\n!\n!\nmultilink\
+      \ bundle-name authenticated\n!\n!\n!\n!\n!\n!\n!\n!\n!\n!\n!\n!\n!\ncrypto pki\
+      \ trustpoint SLA-TrustPoint\n enrollment pkcs12\n revocation-check crl\n!\n\
+      crypto pki trustpoint TP-self-signed-2925253683\n enrollment selfsigned\n subject-name\
+      \ cn=IOS-Self-Signed-Certificate-2925253683\n revocation-check none\n rsakeypair\
+      \ TP-self-signed-2925253683\n!\n!\ncrypto pki certificate chain SLA-TrustPoint\n\
+      \ certificate ca 01\n  30820321 30820209 A0030201 02020101 300D0609 2A864886\
+      \ F70D0101 0B050030\n  32310E30 0C060355 040A1305 43697363 6F312030 1E060355\
+      \ 04031317 43697363\n  6F204C69 63656E73 696E6720 526F6F74 20434130 1E170D31\
+      \ 33303533 30313934\n  3834375A 170D3338 30353330 31393438 34375A30 32310E30\
+      \ 0C060355 040A1305\n  43697363 6F312030 1E060355 04031317 43697363 6F204C69\
+      \ 63656E73 696E6720\n  526F6F74 20434130 82012230 0D06092A 864886F7 0D010101\
+      \ 05000382 010F0030\n  82010A02 82010100 A6BCBD96 131E05F7 145EA72C 2CD686E6\
+      \ 17222EA1 F1EFF64D\n  CBB4C798 212AA147 C655D8D7 9471380D 8711441E 1AAF071A\
+      \ 9CAE6388 8A38E520\n  1C394D78 462EF239 C659F715 B98C0A59 5BBB5CBD 0CFEBEA3\
+      \ 700A8BF7 D8F256EE\n  4AA4E80D DB6FD1C9 60B1FD18 FFC69C96 6FA68957 A2617DE7\
+      \ 104FDC5F EA2956AC\n  7390A3EB 2B5436AD C847A2C5 DAB553EB 69A9A535 58E9F3E3\
+      \ C0BD23CF 58BD7188\n  68E69491 20F320E7 948E71D7 AE3BCC84 F10684C7 4BC8E00F\
+      \ 539BA42B 42C68BB7\n  C7479096 B4CB2D62 EA2F505D C7B062A4 6811D95B E8250FC4\
+      \ 5D5D5FB8 8F27D191\n  C55F0D76 61F9A4CD 3D992327 A8BB03BD 4E6D7069 7CBADF8B\
+      \ DF5F4368 95135E44\n  DFC7C6CF 04DD7FD1 02030100 01A34230 40300E06 03551D0F\
+      \ 0101FF04 04030201\n  06300F06 03551D13 0101FF04 05300301 01FF301D 0603551D\
+      \ 0E041604 1449DC85\n  4B3D31E5 1B3E6A17 606AF333 3D3B4C73 E8300D06 092A8648\
+      \ 86F70D01 010B0500\n  03820101 00507F24 D3932A66 86025D9F E838AE5C 6D4DF6B0\
+      \ 49631C78 240DA905\n  604EDCDE FF4FED2B 77FC460E CD636FDB DD44681E 3A5673AB\
+      \ 9093D3B1 6C9E3D8B\n  D98987BF E40CBD9E 1AECA0C2 2189BB5C 8FA85686 CD98B646\
+      \ 5575B146 8DFC66A8\n  467A3DF4 4D565700 6ADF0F0D CF835015 3C04FF7C 21E878AC\
+      \ 11BA9CD2 55A9232C\n  7CA7B7E6 C1AF74F6 152E99B7 B1FCF9BB E973DE7F 5BDDEB86\
+      \ C71E3B49 1765308B\n  5FB0DA06 B92AFE7F 494E8A9E 07B85737 F3A58BE1 1A48A229\
+      \ C37C1E69 39F08678\n  80DDCD16 D6BACECA EEBC7CF9 8428787B 35202CDC 60E4616A\
+      \ B623CDBD 230E3AFB\n  418616A9 4093E049 4D10AB75 27E86F73 932E35B5 8862FDAE\
+      \ 0275156F 719BB2F0\n  D697DF7F 28\n  \tquit\ncrypto pki certificate chain TP-self-signed-2925253683\n\
+      \ certificate self-signed 01\n  30820330 30820218 A0030201 02020101 300D0609\
+      \ 2A864886 F70D0101 05050030\n  31312F30 2D060355 04031326 494F532D 53656C66\
+      \ 2D536967 6E65642D 43657274\n  69666963 6174652D 32393235 32353336 3833301E\
+      \ 170D3230 31313330 32303337\n  35375A17 0D333030 31303130 30303030 305A3031\
+      \ 312F302D 06035504 03132649\n  4F532D53 656C662D 5369676E 65642D43 65727469\
+      \ 66696361 74652D32 39323532\n  35333638 33308201 22300D06 092A8648 86F70D01\
+      \ 01010500 0382010F 00308201\n  0A028201 0100AFE6 5772C310 447CDC96 50A62EA6\
+      \ F1699487 E25C9494 C7C39E5E\n  9A934B05 28FBD725 DE6E52A4 05C40BF6 7393D70F\
+      \ D5842A75 73F957A6 0DE2AE71\n  71CE0310 B0D59077 E6758AE7 AF6BD594 01EA7D46\
+      \ E28D0061 B40DD7DB 69B42AB0\n  A6AC43B1 0D1F605E 62603937 5679226C CAC6C617\
+      \ 0628E99D 40A6A1AE 927604A9\n  543448FA E1FA6E89 785FBF3D F142B466 2105306E\
+      \ 1402DAB1 66CCA52C 9D7CFFE6\n  A52E8D8A 975F3B25 0774FC4F 6BC16A22 759E8953\
+      \ 026CDADB 548A52F1 16BF449B\n  D153D6A9 5298BD70 38FBF39F 6FAA0F1B F5068D9D\
+      \ 513D20B8 BAB5FEB4 14CF91E1\n  738331FC 12DBAE02 60628599 327101FD D522B015\
+      \ 8B76F9BA 5C7B035A BB397655\n  38A3275E 56530203 010001A3 53305130 0F060355\
+      \ 1D130101 FF040530 030101FF\n  301F0603 551D2304 18301680 14D7F997 A11F4B15\
+      \ 7EC2428A 51EC6566 B30D063C\n  F2301D06 03551D0E 04160414 D7F997A1 1F4B157E\
+      \ C2428A51 EC6566B3 0D063CF2\n  300D0609 2A864886 F70D0101 05050003 82010100\
+      \ 3668FFDC 8892CBFF 35B5A13F\n  B7E29FC9 456106AD E25CB447 0FAC7448 2A3D6E87\
+      \ 2CD8A0C6 E906E84E 126E2F69\n  666C5C2C 68249B45 93C73A98 EDFCCD83 2E7ED63D\
+      \ 47B51736 490D3B83 AAF8DBD6\n  726CF825 7DE973D7 3DB0FEB4 0D5F3B67 54D77D56\
+      \ 276CA6EC 37620D4F 9AA2F743\n  D14E704C F5207DF0 19942074 160405D1 DD3109A7\
+      \ AC4F6B25 38D29C8D CC7B7022\n  C5723638 C556489D A90294F8 D579CE35 E58D5A04\
+      \ 9F5AF911 2A9E7E8B A7DD10D7\n  FFED3285 516F3D85 6A8EBB03 105BEA5B ED4B8926\
+      \ E882441D ABA38681 6A5F3F78\n  0B21F81F 044DBBAA 2CE23858 A8F07FA3 0874E708\
+      \ 7818D27C 03E1ED00 5BCBE936\n  48702282 5D601A40 672A4DB2 3EAEECF8 4B8E1D24\n\
+      \  \tquit\n!\nlicense udi pid CSR1000V sn 9RVF5QDB3BO\ndiagnostic bootup level\
+      \ minimal\n!\nspanning-tree extend system-id\nmemory free low-watermark processor\
+      \ 80526\n!\n!\n!\nusername cisco privilege 15 secret 9 $9$Tww88AIcsaLwd.$2MfwySjd7EDFhmshQBHJgW3ezUHQhz/hyTGnbEy4XCQ\n\
+      username admin password 0 cisco123\n!\nredundancy\n!\n!\n!\n!\n!\n!\ncdp run\n\
+      !\n!\n!\n!\n!\n!\n!\n!\n!\n!\n!\n!\n!\n!\n!\n!\n!\ninterface Loopback0\n description\
+      \ to\n ip address 6.6.6.6 255.255.255.255\n no shutdown\n!\ninterface Tunnel0\n ip address\
+      \ 172.16.0.3 255.255.255.0\n no ip redirects\n ip nhrp map multicast 192.168.4.2\n\
+      \ ip nhrp map 172.16.0.1 192.168.4.2\n ip nhrp network-id 10\n ip nhrp nhs 172.16.0.1\n\
+      \ tunnel source GigabitEthernet2\n tunnel mode gre multipoint\n no shutdown\n!\ninterface\
+      \ GigabitEthernet1\n description to GigabitEthernet0/2.C-SW2\n ip address 10.10.20.1\
+      \ 255.255.255.0\n negotiation auto\n no mop enabled\n no mop sysid\n no shutdown\n!\ninterface\
+      \ GigabitEthernet2\n description to GigabitEthernet0/1.iosv-0\n ip address 192.168.1.2\
+      \ 255.255.255.252\n negotiation auto\n no mop enabled\n no mop sysid\n no shutdown\n!\ninterface\
+      \ GigabitEthernet3\n description to GigabitEthernet3.RT1\n ip address 10.10.70.2\
+      \ 255.255.255.252\n negotiation auto\n no mop enabled\n no mop sysid\n no shutdown\n!\ninterface\
+      \ GigabitEthernet4\n description to port6.unmanaged-switch-0\n ip vrf forwarding\
+      \ Mgmt-intf\n ip address 10.10.20.26 255.255.255.0\n negotiation auto\n no\
+      \ mop enabled\n no mop sysid\n no shutdown\n!\nrouter ospf 1\n redistribute bgp 65535\n network\
+      \ 6.6.6.6 0.0.0.0 area 0\n network 10.10.0.0 0.0.255.255 area 0\n!\nrouter bgp\
+      \ 65535\n bgp log-neighbor-changes\n bgp redistribute-internal\n redistribute\
+      \ ospf 1\n neighbor 172.16.0.1 remote-as 65535\n distance bgp 20 20 20\n!\n\
+      ip forward-protocol nd\nno ip http server\nip http secure-server\nip route 192.168.0.0\
+      \ 255.255.0.0 192.168.1.1\nip route vrf Mgmt-intf 0.0.0.0 0.0.0.0 10.10.20.254\n!\nip ssh server algorithm authentication password\n\
+      !\n!\n!\n!\n!\n!\n!\ncontrol-plane\n!\n!\n!\n!\n!\n!\nline con 0\n exec-timeout\
+      \ 0 0\n password cisco\n stopbits 1\nline vty 0 4\n exec-timeout 720 0\n password\
+      \ cisco\n login local\n transport input telnet ssh\nline vty 5 16\n login local\n\
+      !\n!\n!\n!\n!\n!\nend"
+    image_definition: csr1000v-161101b
+    tags: []
+    interfaces:
+      - id: i0
+        label: Loopback0
+        type: loopback
+      - id: i1
+        slot: 0
+        label: GigabitEthernet1
+        type: physical
+      - id: i2
+        slot: 1
+        label: GigabitEthernet2
+        type: physical
+      - id: i3
+        slot: 2
+        label: GigabitEthernet3
+        type: physical
+      - id: i4
+        slot: 3
+        label: GigabitEthernet4
+        type: physical
+  - id: n6
+    label: RT5
+    node_definition: csr1000v
+    x: -450
+    y: 250
+    configuration: "Building configuration...\n\nCurrent configuration : 7294 bytes\n\
+      !\n! Last configuration change at 03:47:28 UTC Tue Dec 1 2020\n!\nversion 16.11\n\
+      service timestamps debug datetime msec\nservice timestamps log datetime msec\n\
+      service call-home\nplatform qfp utilization monitor load 80\nno platform punt-keepalive\
+      \ disable-kernel-core\nplatform console serial\n!\nhostname RT5\n!\nboot-start-marker\n\
+      boot-end-marker\n!\n!\nno logging console\nenable secret 9 $9$ptKhS1eb8l1kwk$akkO71bcKEmEpcQYKRedJkmlVyWz1gwIba9do7v.DQo\n\
+      enable password cisco\n!\nno aaa new-model\ncall-home\n ! If contact email address\
+      \ in call-home is configured as sch-smart-licensing@cisco.com\n ! the email\
+      \ address configured in Cisco Smart License Portal will be used as contact email\
+      \ address to send SCH notifications.\n contact-email-addr sch-smart-licensing@cisco.com\n\
+      \ profile \"CiscoTAC-1\"\n  active\n  destination transport-method http\n  no\
+      \ destination transport-method email\n!\nip vrf Mgmt-intf\n!\n!\n!\n!\n!\n!\n\
+      !\nno ip domain lookup\nip domain name virl.info\n!\n!\n!\nlogin on-success\
+      \ log\n!\n!\n!\n!\n!\n!\n!\nsubscriber templating\n!\n!\n!\n!\n!\n!\nmultilink\
+      \ bundle-name authenticated\n!\n!\n!\n!\n!\n!\n!\n!\n!\n!\n!\n!\n!\ncrypto pki\
+      \ trustpoint SLA-TrustPoint\n enrollment pkcs12\n revocation-check crl\n!\n\
+      crypto pki trustpoint TP-self-signed-788708864\n enrollment selfsigned\n subject-name\
+      \ cn=IOS-Self-Signed-Certificate-788708864\n revocation-check none\n rsakeypair\
+      \ TP-self-signed-788708864\n!\n!\ncrypto pki certificate chain SLA-TrustPoint\n\
+      \ certificate ca 01\n  30820321 30820209 A0030201 02020101 300D0609 2A864886\
+      \ F70D0101 0B050030\n  32310E30 0C060355 040A1305 43697363 6F312030 1E060355\
+      \ 04031317 43697363\n  6F204C69 63656E73 696E6720 526F6F74 20434130 1E170D31\
+      \ 33303533 30313934\n  3834375A 170D3338 30353330 31393438 34375A30 32310E30\
+      \ 0C060355 040A1305\n  43697363 6F312030 1E060355 04031317 43697363 6F204C69\
+      \ 63656E73 696E6720\n  526F6F74 20434130 82012230 0D06092A 864886F7 0D010101\
+      \ 05000382 010F0030\n  82010A02 82010100 A6BCBD96 131E05F7 145EA72C 2CD686E6\
+      \ 17222EA1 F1EFF64D\n  CBB4C798 212AA147 C655D8D7 9471380D 8711441E 1AAF071A\
+      \ 9CAE6388 8A38E520\n  1C394D78 462EF239 C659F715 B98C0A59 5BBB5CBD 0CFEBEA3\
+      \ 700A8BF7 D8F256EE\n  4AA4E80D DB6FD1C9 60B1FD18 FFC69C96 6FA68957 A2617DE7\
+      \ 104FDC5F EA2956AC\n  7390A3EB 2B5436AD C847A2C5 DAB553EB 69A9A535 58E9F3E3\
+      \ C0BD23CF 58BD7188\n  68E69491 20F320E7 948E71D7 AE3BCC84 F10684C7 4BC8E00F\
+      \ 539BA42B 42C68BB7\n  C7479096 B4CB2D62 EA2F505D C7B062A4 6811D95B E8250FC4\
+      \ 5D5D5FB8 8F27D191\n  C55F0D76 61F9A4CD 3D992327 A8BB03BD 4E6D7069 7CBADF8B\
+      \ DF5F4368 95135E44\n  DFC7C6CF 04DD7FD1 02030100 01A34230 40300E06 03551D0F\
+      \ 0101FF04 04030201\n  06300F06 03551D13 0101FF04 05300301 01FF301D 0603551D\
+      \ 0E041604 1449DC85\n  4B3D31E5 1B3E6A17 606AF333 3D3B4C73 E8300D06 092A8648\
+      \ 86F70D01 010B0500\n  03820101 00507F24 D3932A66 86025D9F E838AE5C 6D4DF6B0\
+      \ 49631C78 240DA905\n  604EDCDE FF4FED2B 77FC460E CD636FDB DD44681E 3A5673AB\
+      \ 9093D3B1 6C9E3D8B\n  D98987BF E40CBD9E 1AECA0C2 2189BB5C 8FA85686 CD98B646\
+      \ 5575B146 8DFC66A8\n  467A3DF4 4D565700 6ADF0F0D CF835015 3C04FF7C 21E878AC\
+      \ 11BA9CD2 55A9232C\n  7CA7B7E6 C1AF74F6 152E99B7 B1FCF9BB E973DE7F 5BDDEB86\
+      \ C71E3B49 1765308B\n  5FB0DA06 B92AFE7F 494E8A9E 07B85737 F3A58BE1 1A48A229\
+      \ C37C1E69 39F08678\n  80DDCD16 D6BACECA EEBC7CF9 8428787B 35202CDC 60E4616A\
+      \ B623CDBD 230E3AFB\n  418616A9 4093E049 4D10AB75 27E86F73 932E35B5 8862FDAE\
+      \ 0275156F 719BB2F0\n  D697DF7F 28\n  \tquit\ncrypto pki certificate chain TP-self-signed-788708864\n\
+      \ certificate self-signed 01\n  3082032E 30820216 A0030201 02020101 300D0609\
+      \ 2A864886 F70D0101 05050030\n  30312E30 2C060355 04031325 494F532D 53656C66\
+      \ 2D536967 6E65642D 43657274\n  69666963 6174652D 37383837 30383836 34301E17\
+      \ 0D323031 31333032 30333834\n  335A170D 33303031 30313030 30303030 5A303031\
+      \ 2E302C06 03550403 1325494F\n  532D5365 6C662D53 69676E65 642D4365 72746966\
+      \ 69636174 652D3738 38373038\n  38363430 82012230 0D06092A 864886F7 0D010101\
+      \ 05000382 010F0030 82010A02\n  82010100 F6F54D4A F04510A4 B5877CC5 5EE78B71\
+      \ 3929225D C6D51043 F9C204CE\n  D9B9B292 C358E220 D9FF0967 6A69E3D3 7A984F76\
+      \ 7B89181C 5C457801 9C0B1116\n  E2F7D438 219B13FF 66A95431 064EB57C 573CE9DF\
+      \ 3718C0FC 78DABBF9 C7CE6B32\n  4EB382B3 7337C44C 0AA7691B DB86090C 02F90F87\
+      \ 90CDFBA5 FAE23C49 8A4A4BEF\n  B392B99C BC0DDE83 11B2B0F4 6A993518 56E84EAD\
+      \ 98F39DA2 609828FB AACB7E13\n  BFB7E86E 21FE1133 FC20B014 2D761F76 669CF32B\
+      \ 69039041 FE76C2FD D4D73238\n  9FBC812B 6BA8EDAE FA182957 BFC3E782 46208FA1\
+      \ 4A96C53A 093162E2 ECAAB961\n  2676FBDF 3217275D 8F00EC90 77E00D93 26FF6F24\
+      \ 9687F7AE 7C64805F A8839562\n  00EF4B8B 02030100 01A35330 51300F06 03551D13\
+      \ 0101FF04 05300301 01FF301F\n  0603551D 23041830 168014D4 67F5E66E AEDC219E\
+      \ 364B3B0E 5616E60C D0252E30\n  1D060355 1D0E0416 0414D467 F5E66EAE DC219E36\
+      \ 4B3B0E56 16E60CD0 252E300D\n  06092A86 4886F70D 01010505 00038201 0100163E\
+      \ 73A53936 6D5A1B8B 1F0AEBDF\n  D74B62F8 94BEB531 F10231AD BD5DA554 99DFF76A\
+      \ BF67B488 372AD72A FE2D70C7\n  5C81020B 2DE242EF 446AF49A 0C59FE4C 9205B519\
+      \ 90C47038 DBAD0EAE 8FEA1B95\n  14C97A67 E0A33387 5AA3A5F4 BE3F6100 370EDDCE\
+      \ B7E5491B E5A64D88 09538DD6\n  56BB81E5 5E1F1C66 B8C8B83D EBE36653 32ADD1CC\
+      \ 2C099C64 9FF25396 B72E9959\n  95F3B61A 10F2E831 6392B417 8277C00A E90CC41C\
+      \ 9A35D8CB B90BA2D3 8D83DC26\n  ED2E1074 C8101199 4BC7F7CA 7D36DB88 0C02D8A0\
+      \ 0B68FD88 8ADA05E9 DB73DB73\n  DEEE4B85 C7BB0B3E 1099162E FDB43458 5B290C74\
+      \ A3A163A6 80FBFBE3 98B2B559\n  9A8434F2 BA85E1DA F53BB38B 92893394 9810\n \
+      \ \tquit\n!\nlicense udi pid CSR1000V sn 9IVHL1LX3QJ\ndiagnostic bootup level\
+      \ minimal\n!\nspanning-tree extend system-id\nmemory free low-watermark processor\
+      \ 80526\n!\n!\n!\nusername cisco privilege 15 secret 9 $9$lgQwF0G2xDmt3.$XOnEJ6AufX4ND73eI6xCoCDClGhz6lKp5/M96Z7VKq2\n\
+      username admin password 0 cisco123\n!\nredundancy\n!\n!\n!\n!\n!\n!\n!\n!\n\
+      !\n!\n!\n!\n!\n!\n!\n!\n!\n!\n!\n!\n!\n!\n!\ninterface Loopback0\n description\
+      \ to\n no ip address\n no shutdown\n!\ninterface Tunnel0\n ip address 172.16.0.1\
+      \ 255.255.255.0\n no ip redirects\n ip nhrp network-id 10\n ip nhrp redirect\n\
+      \ tunnel source GigabitEthernet1\n tunnel mode gre multipoint\n no shutdown\n\
+      !\ninterface GigabitEthernet1\n description to GigabitEthernet0/2.iosv-0\n ip\
+      \ address 192.168.4.2 255.255.255.252\n negotiation auto\n no mop enabled\n\
+      \ no mop sysid\n no shutdown\n!\ninterface GigabitEthernet2\n description to\
+      \ port9.unmanaged-switch-0\n ip vrf forwarding Mgmt-intf\n ip address 10.10.20.28\
+      \ 255.255.255.0\n negotiation auto\n no mop enabled\n no mop sysid\n no shutdown\n\
+      !\ninterface GigabitEthernet3\n description to\n no ip address\n no shutdown\n\
+      \ negotiation auto\n no mop enabled\n no mop sysid\n!\ninterface GigabitEthernet4\n\
+      \ description to\n no ip address\n no shutdown\n negotiation auto\n no mop enabled\n\
+      \ no mop sysid\n!\nrouter bgp 65535\n bgp log-neighbor-changes\n neighbor 172.16.0.2\
+      \ remote-as 65535\n neighbor 172.16.0.2 route-reflector-client\n neighbor 172.16.0.3\
+      \ remote-as 65535\n neighbor 172.16.0.3 route-reflector-client\n neighbor 172.16.0.4\
+      \ remote-as 65535\n neighbor 172.16.0.4 route-reflector-client\n neighbor 172.16.0.5\
+      \ remote-as 65535\n neighbor 172.16.0.5 route-reflector-client\n!\nip forward-protocol\
+      \ nd\nno ip http server\nip http secure-server\nip route 192.168.0.0 255.255.0.0\
+      \ 192.168.4.1\nip route vrf Mgmt-intf 0.0.0.0 0.0.0.0 10.10.20.254\n!\nip ssh\
+      \ server algorithm authentication password\n!\n!\n!\n!\n!\n!\n!\ncontrol-plane\n\
+      !\n!\n!\n!\n!\n!\nline con 0\n exec-timeout 0 0\n password cisco\n stopbits\
+      \ 1\nline vty 0 4\n exec-timeout 720 0\n password cisco\n login local\n transport\
+      \ input telnet ssh\nline vty 5 16\n login local\n!\n!\n!\n!\n!\n!\nend"
+    image_definition: csr1000v-161101b
+    tags: []
+    interfaces:
+      - id: i0
+        label: Loopback0
+        type: loopback
+      - id: i1
+        slot: 0
+        label: GigabitEthernet1
+        type: physical
+      - id: i2
+        slot: 1
+        label: GigabitEthernet2
+        type: physical
+      - id: i3
+        slot: 2
+        label: GigabitEthernet3
+        type: physical
+      - id: i4
+        slot: 3
+        label: GigabitEthernet4
+        type: physical
+  - id: n9
+    label: RT3
+    node_definition: csr1000v
+    x: -250
+    y: 0
+    configuration: "Building configuration...\n\nCurrent configuration : 7380 bytes\n\
+      !\n! Last configuration change at 19:57:13 UTC Tue Dec 1 2020\n!\nversion 16.11\n\
+      service timestamps debug datetime msec\nservice timestamps log datetime msec\n\
+      service call-home\nplatform qfp utilization monitor load 80\nno platform punt-keepalive\
+      \ disable-kernel-core\nplatform console serial\n!\nhostname RT3\n!\nboot-start-marker\n\
+      boot-end-marker\n!\n!\nno logging console\nenable secret 9 $9$4bhUEqQ2k9.C0k$xzua1v/GaXRRrZVNTzzhyforznpFwF2JdcQgDfAtplw\n\
+      enable password cisco\n!\nno aaa new-model\ncall-home\n ! If contact email address\
+      \ in call-home is configured as sch-smart-licensing@cisco.com\n ! the email\
+      \ address configured in Cisco Smart License Portal will be used as contact email\
+      \ address to send SCH notifications.\n contact-email-addr sch-smart-licensing@cisco.com\n\
+      \ profile \"CiscoTAC-1\"\n  active\n  destination transport-method http\n  no\
+      \ destination transport-method email\n!\nip vrf Mgmt-intf\n!\n!\n!\n!\n!\n!\n\
+      !\nno ip domain lookup\nip domain name virl.info\n!\n!\n!\nlogin on-success\
+      \ log\n!\n!\n!\n!\n!\n!\n!\nsubscriber templating\n!\n!\n!\n!\n!\n!\nmultilink\
+      \ bundle-name authenticated\n!\n!\n!\n!\n!\n!\n!\n!\n!\n!\n!\n!\n!\ncrypto pki\
+      \ trustpoint SLA-TrustPoint\n enrollment pkcs12\n revocation-check crl\n!\n\
+      crypto pki trustpoint TP-self-signed-2572450130\n enrollment selfsigned\n subject-name\
+      \ cn=IOS-Self-Signed-Certificate-2572450130\n revocation-check none\n rsakeypair\
+      \ TP-self-signed-2572450130\n!\n!\ncrypto pki certificate chain SLA-TrustPoint\n\
+      \ certificate ca 01\n  30820321 30820209 A0030201 02020101 300D0609 2A864886\
+      \ F70D0101 0B050030\n  32310E30 0C060355 040A1305 43697363 6F312030 1E060355\
+      \ 04031317 43697363\n  6F204C69 63656E73 696E6720 526F6F74 20434130 1E170D31\
+      \ 33303533 30313934\n  3834375A 170D3338 30353330 31393438 34375A30 32310E30\
+      \ 0C060355 040A1305\n  43697363 6F312030 1E060355 04031317 43697363 6F204C69\
+      \ 63656E73 696E6720\n  526F6F74 20434130 82012230 0D06092A 864886F7 0D010101\
+      \ 05000382 010F0030\n  82010A02 82010100 A6BCBD96 131E05F7 145EA72C 2CD686E6\
+      \ 17222EA1 F1EFF64D\n  CBB4C798 212AA147 C655D8D7 9471380D 8711441E 1AAF071A\
+      \ 9CAE6388 8A38E520\n  1C394D78 462EF239 C659F715 B98C0A59 5BBB5CBD 0CFEBEA3\
+      \ 700A8BF7 D8F256EE\n  4AA4E80D DB6FD1C9 60B1FD18 FFC69C96 6FA68957 A2617DE7\
+      \ 104FDC5F EA2956AC\n  7390A3EB 2B5436AD C847A2C5 DAB553EB 69A9A535 58E9F3E3\
+      \ C0BD23CF 58BD7188\n  68E69491 20F320E7 948E71D7 AE3BCC84 F10684C7 4BC8E00F\
+      \ 539BA42B 42C68BB7\n  C7479096 B4CB2D62 EA2F505D C7B062A4 6811D95B E8250FC4\
+      \ 5D5D5FB8 8F27D191\n  C55F0D76 61F9A4CD 3D992327 A8BB03BD 4E6D7069 7CBADF8B\
+      \ DF5F4368 95135E44\n  DFC7C6CF 04DD7FD1 02030100 01A34230 40300E06 03551D0F\
+      \ 0101FF04 04030201\n  06300F06 03551D13 0101FF04 05300301 01FF301D 0603551D\
+      \ 0E041604 1449DC85\n  4B3D31E5 1B3E6A17 606AF333 3D3B4C73 E8300D06 092A8648\
+      \ 86F70D01 010B0500\n  03820101 00507F24 D3932A66 86025D9F E838AE5C 6D4DF6B0\
+      \ 49631C78 240DA905\n  604EDCDE FF4FED2B 77FC460E CD636FDB DD44681E 3A5673AB\
+      \ 9093D3B1 6C9E3D8B\n  D98987BF E40CBD9E 1AECA0C2 2189BB5C 8FA85686 CD98B646\
+      \ 5575B146 8DFC66A8\n  467A3DF4 4D565700 6ADF0F0D CF835015 3C04FF7C 21E878AC\
+      \ 11BA9CD2 55A9232C\n  7CA7B7E6 C1AF74F6 152E99B7 B1FCF9BB E973DE7F 5BDDEB86\
+      \ C71E3B49 1765308B\n  5FB0DA06 B92AFE7F 494E8A9E 07B85737 F3A58BE1 1A48A229\
+      \ C37C1E69 39F08678\n  80DDCD16 D6BACECA EEBC7CF9 8428787B 35202CDC 60E4616A\
+      \ B623CDBD 230E3AFB\n  418616A9 4093E049 4D10AB75 27E86F73 932E35B5 8862FDAE\
+      \ 0275156F 719BB2F0\n  D697DF7F 28\n  \tquit\ncrypto pki certificate chain TP-self-signed-2572450130\n\
+      \ certificate self-signed 01\n  30820330 30820218 A0030201 02020101 300D0609\
+      \ 2A864886 F70D0101 05050030\n  31312F30 2D060355 04031326 494F532D 53656C66\
+      \ 2D536967 6E65642D 43657274\n  69666963 6174652D 32353732 34353031 3330301E\
+      \ 170D3230 31313330 32303338\n  30315A17 0D333030 31303130 30303030 305A3031\
+      \ 312F302D 06035504 03132649\n  4F532D53 656C662D 5369676E 65642D43 65727469\
+      \ 66696361 74652D32 35373234\n  35303133 30308201 22300D06 092A8648 86F70D01\
+      \ 01010500 0382010F 00308201\n  0A028201 01008A27 718EE86C 8755161E 269485CD\
+      \ 94416C08 C0075C97 A1687B3B\n  42A68859 6BE59C51 8761E2A8 29A552D5 14DEFDAC\
+      \ AFBC7FCA 4A38AB38 5F1CB854\n  5D1D2546 7EDDF8CC 568F3934 2A30CEE9 262558D0\
+      \ 4F14E4CA 5BA2EC2C 23DA1EFA\n  94E7CF2E 966F3394 B96B50C5 8E53E5EF 7B039015\
+      \ 7EB77F24 53D3C680 44010AFF\n  799BEAD5 5CCCA6D6 172EA4F4 FBC1C4AE D4B3B75C\
+      \ 953B9B9A A7BAE0C6 D66C2935\n  32420CF5 EC42339D B19100FB 51073F11 998C0EF8\
+      \ 7BE3C778 693099D6 E1CD2420\n  A94A4B6C EC80DE10 69A1AE2B C02CC401 17BADE9F\
+      \ 38EFFF80 B30F7E62 5E3855F8\n  91935EE7 24173C67 19D496CA 7498313B 04FA87DB\
+      \ EDD5A633 FFF2751A CEAEC678\n  827B0335 F9AD0203 010001A3 53305130 0F060355\
+      \ 1D130101 FF040530 030101FF\n  301F0603 551D2304 18301680 14B296C4 AD77D04F\
+      \ C12E5CF6 BE9C705A C181A48F\n  C3301D06 03551D0E 04160414 B296C4AD 77D04FC1\
+      \ 2E5CF6BE 9C705AC1 81A48FC3\n  300D0609 2A864886 F70D0101 05050003 82010100\
+      \ 7B3816A9 0CAE4101 80E0703A\n  6E63E374 C3D41715 537A71F9 7BF4F024 03DC0148\
+      \ 12D471DF 7FFD542B 368E0FBC\n  FA58929E A6E9D2AF 026E06A8 444EE4E8 EB54F8DD\
+      \ E519CB8A 8D44E61D 31C390FA\n  63329281 AA55864E 613C92AF 68F0CBF4 8C31F573\
+      \ DF379401 8F16639A F4861322\n  7947770C 226D9AFE 6D7E824E 70723DD0 F088E14A\
+      \ 6AB6ED76 BB8905A7 9FD335F5\n  DA48A2AD 40C68DC5 5FC1EADD B6C91C7D 0A2378A0\
+      \ 44E3A588 BF22893D 3C53D125\n  943553AD DB31BBB5 B7B60892 BDF52FCE D9040A1C\
+      \ 7A41EFB0 E3B56431 D7A2DCD3\n  F80FE347 C4A6EFBF 83B9FBCA D5F8BB14 6574CF68\
+      \ FE3BC5C3 2511EE56 6EC5EFBC\n  254FD3FF 969999C0 D3803F5A 9952EB7B 95B1122F\n\
+      \  \tquit\n!\nlicense udi pid CSR1000V sn 9SWYEYS13WK\ndiagnostic bootup level\
+      \ minimal\n!\nspanning-tree extend system-id\nmemory free low-watermark processor\
+      \ 80526\n!\n!\n!\nusername cisco privilege 15 secret 9 $9$bFqLRPt4n6gYTE$Kr4H5tdmBN4BGCeN8Oz7EP7UXC0XVDC/Qaj2m6lFwYE\n\
+      username admin password 0 cisco123\n!\nredundancy\n!\n!\n!\n!\n!\n!\ncdp run\n\
+      !\n!\n!\n!\n!\n!\n!\n!\n!\n!\n!\n!\n!\n!\n!\n!\n!\ninterface Loopback0\n description\
+      \ to\n ip address 10.10.10.10 255.255.255.255\n no shutdown\n!\ninterface Tunnel0\n ip address\
+      \ 172.16.0.4 255.255.255.0\n no ip redirects\n ip nhrp map multicast 192.168.4.2\n\
+      \ ip nhrp map 172.16.0.1 192.168.4.2\n ip nhrp network-id 10\n ip nhrp nhs 172.16.0.1\n\
+      \ tunnel source GigabitEthernet2\n tunnel mode gre multipoint\n no shutdown\n!\ninterface\
+      \ GigabitEthernet1\n description to GigabitEthernet0/2.C-SW3\n ip address 10.20.20.1\
+      \ 255.255.255.0\n negotiation auto\n no mop enabled\n no mop sysid\n no shutdown\n!\ninterface\
+      \ GigabitEthernet2\n description to GigabitEthernet0/4.iosv-0\n ip address 192.168.2.2\
+      \ 255.255.255.252\n negotiation auto\n no mop enabled\n no mop sysid\n no shutdown\n!\ninterface\
+      \ GigabitEthernet3\n description to GigabitEthernet3.RT4\n ip address 10.20.70.1\
+      \ 255.255.255.252\n negotiation auto\n no mop enabled\n no mop sysid\n no shutdown\n!\ninterface\
+      \ GigabitEthernet4\n description to port10.unmanaged-switch-0\n ip vrf forwarding\
+      \ Mgmt-intf\n ip address 10.10.20.29 255.255.255.0\n negotiation auto\n no\
+      \ mop enabled\n no mop sysid\n no shutdown\n!\nrouter ospf 1\n redistribute bgp 65535 tag\
+      \ 50\n network 10.10.10.10 0.0.0.0 area 0\n network 10.20.0.0 0.0.255.255 area\
+      \ 0\n!\nrouter bgp 65535\n bgp log-neighbor-changes\n bgp redistribute-internal\n\
+      \ redistribute ospf 1\n neighbor 172.16.0.1 remote-as 65535\n distance bgp 20\
+      \ 20 20\n!\nip forward-protocol nd\nno ip http server\nip http secure-server\n\
+      ip route 192.168.0.0 255.255.0.0 192.168.2.1\nip route vrf Mgmt-intf 0.0.0.0\
+      \ 0.0.0.0 10.10.20.254\n!\nip ssh server algorithm authentication password\n\
+      !\n!\n!\n!\n!\n!\n!\ncontrol-plane\n!\n!\n!\n!\n!\n!\nline con 0\n exec-timeout\
+      \ 0 0\n password cisco\n stopbits 1\nline vty 0 4\n exec-timeout 720 0\n password\
+      \ cisco\n login local\n transport input telnet ssh\nline vty 5 16\n login local\n\
+      !\n!\n!\n!\n!\n!\nend"
+    image_definition: csr1000v-161101b
+    tags: []
+    interfaces:
+      - id: i0
+        label: Loopback0
+        type: loopback
+      - id: i1
+        slot: 0
+        label: GigabitEthernet1
+        type: physical
+      - id: i2
+        slot: 1
+        label: GigabitEthernet2
+        type: physical
+      - id: i3
+        slot: 2
+        label: GigabitEthernet3
+        type: physical
+      - id: i4
+        slot: 3
+        label: GigabitEthernet4
+        type: physical
+  - id: n10
+    label: RT4
+    node_definition: csr1000v
+    x: -250
+    y: 150
+    configuration: "Building configuration...\n\nCurrent configuration : 7126 bytes\n\
+      !\n! Last configuration change at 19:58:19 UTC Tue Dec 1 2020\n!\nversion 16.11\n\
+      service timestamps debug datetime msec\nservice timestamps log datetime msec\n\
+      service call-home\nplatform qfp utilization monitor load 80\nno platform punt-keepalive\
+      \ disable-kernel-core\nplatform console serial\n!\nhostname RT4\n!\nboot-start-marker\n\
+      boot-end-marker\n!\n!\nno logging console\nenable password cisco\n!\nno aaa\
+      \ new-model\ncall-home\n ! If contact email address in call-home is configured\
+      \ as sch-smart-licensing@cisco.com\n ! the email address configured in Cisco\
+      \ Smart License Portal will be used as contact email address to send SCH notifications.\n\
+      \ contact-email-addr sch-smart-licensing@cisco.com\n profile \"CiscoTAC-1\"\n\
+      \  active\n  destination transport-method http\n  no destination transport-method\
+      \ email\nip vrf Mgmt-intf\n!\n!\n!\n!\n!\n!\n!\nno ip domain lookup\nip domain name virl.info\n\
+      !\n!\n!\nlogin on-success log\n!\n!\n!\n!\n!\n!\n!\nsubscriber templating\n\
+      !\n!\n!\n!\n!\n!\nmultilink bundle-name authenticated\n!\n!\n!\n!\n!\n!\n!\n\
+      !\n!\n!\n!\n!\n!\ncrypto pki trustpoint SLA-TrustPoint\n enrollment pkcs12\n\
+      \ revocation-check crl\n!\ncrypto pki trustpoint TP-self-signed-3253900035\n\
+      \ enrollment selfsigned\n subject-name cn=IOS-Self-Signed-Certificate-3253900035\n\
+      \ revocation-check none\n rsakeypair TP-self-signed-3253900035\n!\n!\ncrypto\
+      \ pki certificate chain SLA-TrustPoint\n certificate ca 01\n  30820321 30820209\
+      \ A0030201 02020101 300D0609 2A864886 F70D0101 0B050030\n  32310E30 0C060355\
+      \ 040A1305 43697363 6F312030 1E060355 04031317 43697363\n  6F204C69 63656E73\
+      \ 696E6720 526F6F74 20434130 1E170D31 33303533 30313934\n  3834375A 170D3338\
+      \ 30353330 31393438 34375A30 32310E30 0C060355 040A1305\n  43697363 6F312030\
+      \ 1E060355 04031317 43697363 6F204C69 63656E73 696E6720\n  526F6F74 20434130\
+      \ 82012230 0D06092A 864886F7 0D010101 05000382 010F0030\n  82010A02 82010100\
+      \ A6BCBD96 131E05F7 145EA72C 2CD686E6 17222EA1 F1EFF64D\n  CBB4C798 212AA147\
+      \ C655D8D7 9471380D 8711441E 1AAF071A 9CAE6388 8A38E520\n  1C394D78 462EF239\
+      \ C659F715 B98C0A59 5BBB5CBD 0CFEBEA3 700A8BF7 D8F256EE\n  4AA4E80D DB6FD1C9\
+      \ 60B1FD18 FFC69C96 6FA68957 A2617DE7 104FDC5F EA2956AC\n  7390A3EB 2B5436AD\
+      \ C847A2C5 DAB553EB 69A9A535 58E9F3E3 C0BD23CF 58BD7188\n  68E69491 20F320E7\
+      \ 948E71D7 AE3BCC84 F10684C7 4BC8E00F 539BA42B 42C68BB7\n  C7479096 B4CB2D62\
+      \ EA2F505D C7B062A4 6811D95B E8250FC4 5D5D5FB8 8F27D191\n  C55F0D76 61F9A4CD\
+      \ 3D992327 A8BB03BD 4E6D7069 7CBADF8B DF5F4368 95135E44\n  DFC7C6CF 04DD7FD1\
+      \ 02030100 01A34230 40300E06 03551D0F 0101FF04 04030201\n  06300F06 03551D13\
+      \ 0101FF04 05300301 01FF301D 0603551D 0E041604 1449DC85\n  4B3D31E5 1B3E6A17\
+      \ 606AF333 3D3B4C73 E8300D06 092A8648 86F70D01 010B0500\n  03820101 00507F24\
+      \ D3932A66 86025D9F E838AE5C 6D4DF6B0 49631C78 240DA905\n  604EDCDE FF4FED2B\
+      \ 77FC460E CD636FDB DD44681E 3A5673AB 9093D3B1 6C9E3D8B\n  D98987BF E40CBD9E\
+      \ 1AECA0C2 2189BB5C 8FA85686 CD98B646 5575B146 8DFC66A8\n  467A3DF4 4D565700\
+      \ 6ADF0F0D CF835015 3C04FF7C 21E878AC 11BA9CD2 55A9232C\n  7CA7B7E6 C1AF74F6\
+      \ 152E99B7 B1FCF9BB E973DE7F 5BDDEB86 C71E3B49 1765308B\n  5FB0DA06 B92AFE7F\
+      \ 494E8A9E 07B85737 F3A58BE1 1A48A229 C37C1E69 39F08678\n  80DDCD16 D6BACECA\
+      \ EEBC7CF9 8428787B 35202CDC 60E4616A B623CDBD 230E3AFB\n  418616A9 4093E049\
+      \ 4D10AB75 27E86F73 932E35B5 8862FDAE 0275156F 719BB2F0\n  D697DF7F 28\n  \t\
+      quit\ncrypto pki certificate chain TP-self-signed-3253900035\n certificate self-signed\
+      \ 01\n  30820330 30820218 A0030201 02020101 300D0609 2A864886 F70D0101 05050030\n\
+      \  31312F30 2D060355 04031326 494F532D 53656C66 2D536967 6E65642D 43657274\n\
+      \  69666963 6174652D 33323533 39303030 3335301E 170D3230 31323031 30303339\n\
+      \  33395A17 0D333030 31303130 30303030 305A3031 312F302D 06035504 03132649\n\
+      \  4F532D53 656C662D 5369676E 65642D43 65727469 66696361 74652D33 32353339\n\
+      \  30303033 35308201 22300D06 092A8648 86F70D01 01010500 0382010F 00308201\n\
+      \  0A028201 0100B073 7171EBB9 58928A5F 5CB2CBD6 6E399F1B 722DFB5C 517486DB\n\
+      \  2790B0EB 3450C7E0 213DDAD5 515C2AD6 1BD1D0B6 D86A452E 9C386951 73F66188\n\
+      \  AF57F2ED AEF6BB55 3DF0A9E6 64559F11 1019B5E9 3B1B48BE B86752ED B99147A9\n\
+      \  DAE8044B 1A0FB804 A0EEA104 F8684219 E865D26C 2EE86F88 4C55731E B68003A6\n\
+      \  467C1361 76B7AFC0 5DA3305B 72471CB8 1BD49C9D 0AC5CBCC BA2C831A DFDD3F18\n\
+      \  C8DC8AFC BA3E88F3 0944661C A77E7CC4 868F08C4 1626B9EB 2345DEF0 523C2F15\n\
+      \  BDE055B8 79882C28 BCBADB33 66412B35 7F4947B4 BDE90319 2A466C09 A883E492\n\
+      \  42BA80D9 28DD69D2 C0E185D9 371E1FB0 CEB34959 ACE7CAD4 5573F771 062091FF\n\
+      \  FBED5409 F65D0203 010001A3 53305130 0F060355 1D130101 FF040530 030101FF\n\
+      \  301F0603 551D2304 18301680 14C3E904 3279837C 397DB313 618B54BE F418B26A\n\
+      \  FB301D06 03551D0E 04160414 C3E90432 79837C39 7DB31361 8B54BEF4 18B26AFB\n\
+      \  300D0609 2A864886 F70D0101 05050003 82010100 6E7A97E8 A55E3D01 7510CA27\n\
+      \  CCC198A9 134BFCA0 4B8B7BAF DE05B50C 45FEBF50 CF7C1EEA CDFC5A7A 3F6F9F15\n\
+      \  AD935F54 F1306CC3 480EF8B7 5A698EBD 0769D99A F4EAB5F9 5070EDB4 33258B53\n\
+      \  E23AE741 E202E2EE CB4B603F C31779F0 DBC6F2C6 F69A6EDE 2E3BC99D A159D987\n\
+      \  46FF48A6 D5D8DA41 57261BC4 8EA7A124 AB5D8DE0 2E59851B 169107D2 A8666666\n\
+      \  7D3624AE 32DA5631 6E185C13 8A7D224B 66A754A3 DB1C20EB E00622A7 1CFD5465\n\
+      \  7D4921B0 F4594F83 6ED6E0BD C62D584E 220D13C1 A8A0366F BB2E3E61 78389BB0\n\
+      \  3F570F37 C58278B3 E9E703A6 0FBAB08D 2694BD51 6BA48EC2 82026B08 86830A77\n\
+      \  1EA0521D 7CB509E3 365896C9 C0BE6080 A417EDBE\n  \tquit\n!\nlicense udi pid\
+      \ CSR1000V sn 9820271DH38\ndiagnostic bootup level minimal\n!\nspanning-tree\
+      \ extend system-id\nmemory free low-watermark processor 80526\n!\n!\n!\nusername\
+      \ cisco privilege 15 secret 9 $9$veVVkke/0HxZTk$khKrEDsw9R.7ggoyn.Yll.QpnaUzrYuupHQ/iwDAD6s\n\
+      \ username admin password 0 cisco123\n!\nredundancy\n!\n!\n!\n!\n!\n!\ncdp run\n!\n!\n!\n!\n!\n!\n!\n!\n!\n!\n!\n\
+      !\n!\n!\n!\n!\n!\ninterface Loopback0\n description to\n ip address 11.11.11.11\
+      \ 255.255.255.255\n no shutdown\n!\ninterface Tunnel0\n ip address 172.16.0.5 255.255.255.0\n\
+      \ no ip redirects\n ip nhrp map multicast 192.168.4.2\n ip nhrp map 172.16.0.1\
+      \ 192.168.4.2\n ip nhrp network-id 10\n ip nhrp nhs 172.16.0.1\n tunnel source\
+      \ GigabitEthernet2\n tunnel mode gre multipoint\n no shutdown\n!\ninterface GigabitEthernet1\n\
+      \ description to GigabitEthernet0/2.C-SW4\n ip address 10.20.10.1 255.255.255.0\n\
+      \ negotiation auto\n no mop enabled\n no mop sysid\n no shutdown\n!\ninterface GigabitEthernet2\n\
+      \ description to GigabitEthernet0/3.iosv-0\n ip address 192.168.3.2 255.255.255.252\n\
+      \ negotiation auto\n no mop enabled\n no mop sysid\n no shutdown\n!\ninterface GigabitEthernet3\n\
+      \ description to GigabitEthernet3.RT3\n ip address 10.20.70.2 255.255.255.252\n\
+      \ negotiation auto\n no mop enabled\n no mop sysid\n no shutdown\n!\ninterface GigabitEthernet4\n\
+      \ description to port11.unmanaged-switch-0\n ip vrf forwarding Mgmt-intf\nip address 10.10.20.30 255.255.255.0\n\
+      \ negotiation auto\n no mop enabled\n no mop sysid\n no shutdown\n!\nrouter ospf 1\n redistribute bgp\
+      \ 65535 tag 50\n network 10.20.0.0 0.0.255.255 area 0\n network 11.11.11.11\
+      \ 0.0.0.0 area 0\n!\nrouter bgp 65535\n bgp log-neighbor-changes\n bgp redistribute-internal\n\
+      \ redistribute ospf 1\n neighbor 172.16.0.1 remote-as 65535\n distance bgp 20\
+      \ 20 20\n!\nip forward-protocol nd\nno ip http server\nip http secure-server\n\
+      ip route 192.168.0.0 255.255.0.0 192.168.3.1\nip route vrf Mgmt-intf 0.0.0.0 0.0.0.0 10.10.20.254\n!\nip ssh server algorithm authentication\
+      \ password\n!\n!\n!\n!\n!\n!\n!\ncontrol-plane\n!\n!\n!\n!\n!\n!\nline con 0\n\
+      \ exec-timeout 0 0\n password cisco\n stopbits 1\nline vty 0 4\n exec-timeout\
+      \ 720 0\n password cisco\n login local\n transport input telnet ssh\n!\n!\n\
+      !\n!\n!\n!\nend"
+    image_definition: csr1000v-161101b
+    tags: []
+    interfaces:
+      - id: i0
+        label: Loopback0
+        type: loopback
+      - id: i1
+        slot: 0
+        label: GigabitEthernet1
+        type: physical
+      - id: i2
+        slot: 1
+        label: GigabitEthernet2
+        type: physical
+      - id: i3
+        slot: 2
+        label: GigabitEthernet3
+        type: physical
+      - id: i4
+        slot: 3
+        label: GigabitEthernet4
+        type: physical
+  - id: n15
+    label: A-SW2
+    node_definition: iosvl2
+    x: -950
+    y: 150
+    configuration: |-
+      Building configuration...
+
+      Current configuration : 4137 bytes
+      !
+      ! Last configuration change at 01:19:24 UTC Tue Dec 1 2020
+      !
+      version 15.2
+      service timestamps debug datetime msec
+      service timestamps log datetime msec
+      no service password-encryption
+      service compress-config
+      !
+      hostname A-SW2
+      !
+      boot-start-marker
+      boot-end-marker
+      !
+      !
+      vrf definition Mgmt-intf
+       !
+       address-family ipv4
+       exit-address-family
+       !
+       address-family ipv6
+       exit-address-family
+      !
+      no logging console
+      enable secret 5 $1$aT66$ANGZtlGS1wSiUbzUY/fxk1
+      enable password cisco
+      !
+      username admin password 0 cisco123
+      no aaa new-model
+      !
+      !
+      !
+      !
+      !
+      vtp domain virl.lab
+      vtp mode transparent
+      !
+      !
+      !
+      no ip domain-lookup
+      ip cef
+      no ipv6 cef
+      !
+      !
+      !
+      spanning-tree mode pvst
+      spanning-tree extend system-id
+      !
+      !
+      vlan 2
+       name ank_vlan2
+      !
+      vlan 100
+       name MGMT
+      no cdp run
+      !
+      !
+      !
+      !
+      !
+      !
+      !
+      !
+      !
+      !
+      !
+      !
+      !
+      !
+      interface Loopback0
+       description to
+       no ip address
+       shutdown
+      !
+      interface GigabitEthernet0/0
+       description to port2.unmanaged-switch-0
+       no switchport
+       vrf forwarding Mgmt-intf
+       ip address 10.10.20.22 255.255.255.0
+       duplex full
+       no negotiation auto
+      !
+      interface GigabitEthernet0/1
+       description to
+       no switchport
+       no ip address
+       shutdown
+       duplex full
+       no negotiation auto
+      !
+      interface GigabitEthernet0/2
+       description to
+       no switchport
+       no ip address
+       shutdown
+       duplex full
+       no negotiation auto
+      !
+      interface GigabitEthernet0/3
+       description to
+       no switchport
+       no ip address
+       shutdown
+       duplex full
+       no negotiation auto
+      !
+      interface GigabitEthernet1/0
+       description to GigabitEthernet1/1.C-SW1
+       switchport trunk encapsulation dot1q
+       switchport mode trunk
+       duplex full
+       no negotiation auto
+      !
+      interface GigabitEthernet1/1
+       description to GigabitEthernet1/1.C-SW2
+       switchport trunk encapsulation dot1q
+       switchport mode trunk
+       duplex full
+       no negotiation auto
+      !
+      interface Vlan100
+       ip address 10.10.100.11 255.255.255.0
+      !
+      ip forward-protocol nd
+      !
+      no ip http server
+      no ip http secure-server
+      !
+      ip route 0.0.0.0 0.0.0.0 10.10.100.1
+      ip route vrf Mgmt-intf 0.0.0.0 0.0.0.0 10.10.20.254
+      ip ssh server algorithm encryption aes128-ctr aes192-ctr aes256-ctr
+      ip ssh client algorithm encryption aes128-ctr aes192-ctr aes256-ctr
+      !
+      !
+      !
+      !
+      !
+      !
+      control-plane
+      !
+      banner exec ^CCC
+      **************************************************************************
+      * IOSv is strictly limited to use for evaluation, demonstration and IOS  *
+      * education. IOSv is provided as-is and is not supported by Cisco's      *
+      * Technical Advisory Center. Any use or disclosure, in whole or in part, *
+      * of the IOSv Software or Documentation to any third party for any       *
+      * purposes is expressly prohibited except as otherwise authorized by     *
+      * Cisco in writing.                                                      *
+      **************************************************************************^C
+      banner incoming ^CCC
+      **************************************************************************
+      * IOSv is strictly limited to use for evaluation, demonstration and IOS  *
+      * education. IOSv is provided as-is and is not supported by Cisco's      *
+      * Technical Advisory Center. Any use or disclosure, in whole or in part, *
+      * of the IOSv Software or Documentation to any third party for any       *
+      * purposes is expressly prohibited except as otherwise authorized by     *
+      * Cisco in writing.                                                      *
+      **************************************************************************^C
+      banner login ^CCC
+      **************************************************************************
+      * IOSv is strictly limited to use for evaluation, demonstration and IOS  *
+      * education. IOSv is provided as-is and is not supported by Cisco's      *
+      * Technical Advisory Center. Any use or disclosure, in whole or in part, *
+      * of the IOSv Software or Documentation to any third party for any       *
+      * purposes is expressly prohibited except as otherwise authorized by     *
+      * Cisco in writing.                                                      *
+      **************************************************************************^C
+      !
+      line con 0
+       exec-timeout 0 0
+       password cisco
+      line aux 0
+      line vty 0 4
+       exec-timeout 720 0
+       password cisco
+       login local
+       transport input telnet ssh
+      line vty 5 16
+       login local
+      !
+      !
+      end
+    image_definition: iosvl2-2019
+    tags: []
+    interfaces:
+      - id: i0
+        label: Loopback0
+        type: loopback
+      - id: i1
+        slot: 0
+        label: GigabitEthernet0/0
+        type: physical
+      - id: i2
+        slot: 1
+        label: GigabitEthernet0/1
+        type: physical
+      - id: i3
+        slot: 2
+        label: GigabitEthernet0/2
+        type: physical
+      - id: i4
+        slot: 3
+        label: GigabitEthernet0/3
+        type: physical
+      - id: i5
+        slot: 4
+        label: GigabitEthernet1/0
+        type: physical
+      - id: i6
+        slot: 5
+        label: GigabitEthernet1/1
+        type: physical
+  - id: n16
+    label: C-SW3
+    node_definition: iosvl2
+    x: -100
+    y: 0
+    configuration: |-
+      Building configuration...
+
+      Current configuration : 5160 bytes
+      !
+      ! Last configuration change at 19:39:53 UTC Tue Dec 1 2020
+      !
+      version 15.2
+      service timestamps debug datetime msec
+      service timestamps log datetime msec
+      no service password-encryption
+      service compress-config
+      !
+      hostname C-SW3
+      !
+      boot-start-marker
+      boot-end-marker
+      !
+      !
+      vrf definition Mgmt-intf
+       !
+       address-family ipv4
+       exit-address-family
+       !
+       address-family ipv6
+       exit-address-family
+      !
+      no logging console
+      enable secret 5 $1$PRTk$3/J4MVMh0LjbTXLFnT7yt/
+      enable password cisco
+      !
+      username admin password 0 cisco123
+      no aaa new-model
+      !
+      !
+      !
+      !
+      !
+      vtp domain virl.lab
+      vtp mode transparent
+      !
+      !
+      !
+      no ip domain-lookup
+      ip cef
+      no ipv6 cef
+      !
+      !
+      !
+      spanning-tree mode pvst
+      spanning-tree extend system-id
+      !
+      !
+      vlan 2
+       name ank_vlan2
+      !
+      vlan 20
+       name C-SW3_to_RT3
+      !
+      vlan 30
+       name SERVERS
+      !
+      vlan 40
+       name USERS
+      !
+      vlan 50
+       name INFRA
+      !
+      vlan 60
+       name VOIP
+      !
+      vlan 100
+       name MGMT
+      !
+      vlan 101
+       name Core_Switch_Link
+      !
+      !
+      !
+      !
+      !
+      !
+      !
+      !
+      !
+      !
+      !
+      !
+      !
+      !
+      interface Loopback0
+       description to
+       ip address 12.12.12.12 255.255.255.255
+      !
+      interface Port-channel1
+       switchport trunk encapsulation dot1q
+       switchport mode trunk
+      !
+      interface GigabitEthernet0/0
+       description to GigabitEthernet0/0.C-SW4
+       switchport trunk encapsulation dot1q
+       switchport mode trunk
+       duplex full
+       no negotiation auto
+       channel-group 1 mode active
+      !
+      interface GigabitEthernet0/1
+       description to GigabitEthernet0/1.C-SW4
+       switchport trunk encapsulation dot1q
+       switchport mode trunk
+       duplex full
+       no negotiation auto
+       channel-group 1 mode active
+      !
+      interface GigabitEthernet0/2
+       description C-SW3 to RT3
+       no switchport
+       ip address 10.20.20.2 255.255.255.0
+       duplex full
+       no negotiation auto
+      !
+      interface GigabitEthernet0/3
+       description to port12.unmanaged-switch-0
+       no switchport
+       vrf forwarding Mgmt-intf
+       ip address 10.10.20.31 255.255.255.0
+       duplex full
+       no negotiation auto
+       no cdp tlv app
+      !
+      interface GigabitEthernet1/0
+       description to GigabitEthernet0/0.A-SW3
+       switchport trunk encapsulation dot1q
+       switchport mode trunk
+       duplex full
+       no negotiation auto
+      !
+      interface GigabitEthernet1/1
+       description to GigabitEthernet1/0.A-SW4
+       switchport trunk encapsulation dot1q
+       switchport mode trunk
+       duplex full
+       no negotiation auto
+      !
+      interface Vlan40
+       description USERS
+       ip address 10.20.40.2 255.255.255.0
+       standby 1 ip 10.20.40.1
+      !
+      interface Vlan50
+       description INFRA
+       ip address 10.20.50.2 255.255.255.0
+       standby 1 ip 10.20.50.1
+      !
+      interface Vlan60
+       description VOIP
+       ip address 10.20.60.2 255.255.255.0
+       standby 1 ip 10.20.60.1
+      !
+      interface Vlan100
+       description MGMT
+       ip address 10.20.100.2 255.255.255.0
+       standby 1 ip 10.20.100.1
+      !
+      interface Vlan101
+       description Core_Switch_Link
+       ip address 10.20.101.1 255.255.255.0
+      !
+      router ospf 1
+       passive-interface Vlan40
+       passive-interface Vlan50
+       passive-interface Vlan60
+       passive-interface Vlan100
+       network 10.20.0.0 0.0.255.255 area 0
+       network 12.12.12.12 0.0.0.0 area 0
+      !
+      ip forward-protocol nd
+      !
+      no ip http server
+      no ip http secure-server
+      !
+      ip route vrf Mgmt-intf 0.0.0.0 0.0.0.0 10.10.20.254
+      ip ssh server algorithm encryption aes128-ctr aes192-ctr aes256-ctr
+      ip ssh client algorithm encryption aes128-ctr aes192-ctr aes256-ctr
+      !
+      !
+      !
+      !
+      !
+      !
+      control-plane
+      !
+      banner exec ^CCCC
+      **************************************************************************
+      * IOSv is strictly limited to use for evaluation, demonstration and IOS  *
+      * education. IOSv is provided as-is and is not supported by Cisco's      *
+      * Technical Advisory Center. Any use or disclosure, in whole or in part, *
+      * of the IOSv Software or Documentation to any third party for any       *
+      * purposes is expressly prohibited except as otherwise authorized by     *
+      * Cisco in writing.                                                      *
+      **************************************************************************^C
+      banner incoming ^CCCC
+      **************************************************************************
+      * IOSv is strictly limited to use for evaluation, demonstration and IOS  *
+      * education. IOSv is provided as-is and is not supported by Cisco's      *
+      * Technical Advisory Center. Any use or disclosure, in whole or in part, *
+      * of the IOSv Software or Documentation to any third party for any       *
+      * purposes is expressly prohibited except as otherwise authorized by     *
+      * Cisco in writing.                                                      *
+      **************************************************************************^C
+      banner login ^CCCC
+      **************************************************************************
+      * IOSv is strictly limited to use for evaluation, demonstration and IOS  *
+      * education. IOSv is provided as-is and is not supported by Cisco's      *
+      * Technical Advisory Center. Any use or disclosure, in whole or in part, *
+      * of the IOSv Software or Documentation to any third party for any       *
+      * purposes is expressly prohibited except as otherwise authorized by     *
+      * Cisco in writing.                                                      *
+      **************************************************************************^C
+      !
+      line con 0
+       exec-timeout 0 0
+       password cisco
+      line aux 0
+      line vty 0 4
+       exec-timeout 720 0
+       password cisco
+       login local
+       transport input telnet ssh
+      line vty 5 16
+       login local
+      !
+      !
+      end
+    image_definition: iosvl2-2019
+    tags: []
+    interfaces:
+      - id: i0
+        label: Loopback0
+        type: loopback
+      - id: i1
+        slot: 0
+        label: GigabitEthernet0/0
+        type: physical
+      - id: i2
+        slot: 1
+        label: GigabitEthernet0/1
+        type: physical
+      - id: i3
+        slot: 2
+        label: GigabitEthernet0/2
+        type: physical
+      - id: i4
+        slot: 3
+        label: GigabitEthernet0/3
+        type: physical
+      - id: i5
+        slot: 4
+        label: GigabitEthernet1/0
+        type: physical
+      - id: i6
+        slot: 5
+        label: GigabitEthernet1/1
+        type: physical
+  - id: n17
+    label: C-SW4
+    node_definition: iosvl2
+    x: -100
+    y: 150
+    configuration: |-
+      Building configuration...
+
+      Current configuration : 5129 bytes
+      !
+      ! Last configuration change at 19:41:57 UTC Tue Dec 1 2020
+      !
+      version 15.2
+      service timestamps debug datetime msec
+      service timestamps log datetime msec
+      no service password-encryption
+      service compress-config
+      !
+      hostname C-SW4
+      !
+      boot-start-marker
+      boot-end-marker
+      !
+      !
+      vrf definition Mgmt-intf
+       !
+       address-family ipv4
+       exit-address-family
+       !
+       address-family ipv6
+       exit-address-family
+      !
+      no logging console
+      enable secret 5 $1$jmf5$Cylv/YBIJ2nz3mUvS7rzb0
+      enable password cisco
+      !
+      username admin password 0 cisco123
+      no aaa new-model
+      !
+      !
+      !
+      !
+      !
+      vtp domain virl.lab
+      vtp mode transparent
+      !
+      !
+      !
+      no ip domain-lookup
+      ip cef
+      no ipv6 cef
+      !
+      !
+      !
+      spanning-tree mode pvst
+      spanning-tree extend system-id
+      !
+      !
+      vlan 2
+       name ank_vlan2
+      !
+      vlan 10
+       name C-SW4_to_RT4
+      !
+      vlan 30
+       name SERVERS
+      !
+      vlan 40
+       name USERS
+      !
+      vlan 50
+       name INFRA
+      !
+      vlan 60
+       name VOIP
+      !
+      vlan 100
+       name MGMT
+      !
+      vlan 101
+       name Core_Switch_Link
+      !
+      !
+      !
+      !
+      !
+      !
+      !
+      !
+      !
+      !
+      !
+      !
+      !
+      !
+      interface Loopback0
+       description to
+       ip address 13.13.13.13 255.255.255.255
+      !
+      interface Port-channel1
+       switchport trunk encapsulation dot1q
+       switchport mode trunk
+      !
+      interface GigabitEthernet0/0
+       description to GigabitEthernet0/0.C-SW3
+       switchport trunk encapsulation dot1q
+       switchport mode trunk
+       duplex full
+       no negotiation auto
+       channel-group 1 mode active
+      !
+      interface GigabitEthernet0/1
+       description to GigabitEthernet0/1.C-SW3
+       switchport trunk encapsulation dot1q
+       switchport mode trunk
+       duplex full
+       no negotiation auto
+       channel-group 1 mode active
+      !
+      interface GigabitEthernet0/2
+       description C-SW4 to RT4
+       no switchport
+       ip address 10.20.10.2 255.255.255.0
+       duplex full
+       no negotiation auto
+      !
+      interface GigabitEthernet0/3
+       description to port13.unmanaged-switch-0
+       no switchport
+       vrf forwarding Mgmt-intf
+       ip address 10.10.20.32 255.255.255.0
+       duplex full
+       no negotiation auto
+       no cdp tlv app
+      !
+      interface GigabitEthernet1/0
+       description to GigabitEthernet0/1.A-SW3
+       no switchport
+       no ip address
+       duplex full
+       no negotiation auto
+      !
+      interface GigabitEthernet1/1
+       description to GigabitEthernet1/1.A-SW4
+       switchport trunk encapsulation dot1q
+       switchport mode trunk
+       duplex full
+       no negotiation auto
+      !
+      interface Vlan40
+       description USERS
+       ip address 10.20.40.3 255.255.255.0
+       standby 1 ip 10.20.40.1
+      !
+      interface Vlan50
+       description INFRA
+       ip address 10.20.50.3 255.255.255.0
+       standby 1 ip 10.20.50.1
+      !
+      interface Vlan60
+       description VOIP
+       ip address 10.20.60.3 255.255.255.0
+       standby 1 ip 10.20.60.1
+      !
+      interface Vlan100
+       description MGMT
+       ip address 10.20.100.3 255.255.255.0
+       standby 1 ip 10.20.100.1
+      !
+      interface Vlan101
+       description Core_Switch_Link
+       ip address 10.20.101.2 255.255.255.0
+      !
+      router ospf 1
+       passive-interface Vlan40
+       passive-interface Vlan50
+       passive-interface Vlan60
+       passive-interface Vlan100
+       network 10.20.0.0 0.0.255.255 area 0
+       network 13.13.13.13 0.0.0.0 area 0
+      !
+      ip forward-protocol nd
+      !
+      no ip http server
+      no ip http secure-server
+      !
+      ip route vrf Mgmt-intf 0.0.0.0 0.0.0.0 10.10.20.254
+      ip ssh server algorithm encryption aes128-ctr aes192-ctr aes256-ctr
+      ip ssh client algorithm encryption aes128-ctr aes192-ctr aes256-ctr
+      !
+      !
+      !
+      !
+      !
+      !
+      control-plane
+      !
+      banner exec ^CCCC
+      **************************************************************************
+      * IOSv is strictly limited to use for evaluation, demonstration and IOS  *
+      * education. IOSv is provided as-is and is not supported by Cisco's      *
+      * Technical Advisory Center. Any use or disclosure, in whole or in part, *
+      * of the IOSv Software or Documentation to any third party for any       *
+      * purposes is expressly prohibited except as otherwise authorized by     *
+      * Cisco in writing.                                                      *
+      **************************************************************************^C
+      banner incoming ^CCCC
+      **************************************************************************
+      * IOSv is strictly limited to use for evaluation, demonstration and IOS  *
+      * education. IOSv is provided as-is and is not supported by Cisco's      *
+      * Technical Advisory Center. Any use or disclosure, in whole or in part, *
+      * of the IOSv Software or Documentation to any third party for any       *
+      * purposes is expressly prohibited except as otherwise authorized by     *
+      * Cisco in writing.                                                      *
+      **************************************************************************^C
+      banner login ^CCCC
+      **************************************************************************
+      * IOSv is strictly limited to use for evaluation, demonstration and IOS  *
+      * education. IOSv is provided as-is and is not supported by Cisco's      *
+      * Technical Advisory Center. Any use or disclosure, in whole or in part, *
+      * of the IOSv Software or Documentation to any third party for any       *
+      * purposes is expressly prohibited except as otherwise authorized by     *
+      * Cisco in writing.                                                      *
+      **************************************************************************^C
+      !
+      line con 0
+       exec-timeout 0 0
+       password cisco
+      line aux 0
+      line vty 0 4
+       exec-timeout 720 0
+       password cisco
+       login local
+       transport input telnet ssh
+      line vty 5 16
+       login local
+      !
+      !
+      end
+    image_definition: iosvl2-2019
+    tags: []
+    interfaces:
+      - id: i0
+        label: Loopback0
+        type: loopback
+      - id: i1
+        slot: 0
+        label: GigabitEthernet0/0
+        type: physical
+      - id: i2
+        slot: 1
+        label: GigabitEthernet0/1
+        type: physical
+      - id: i3
+        slot: 2
+        label: GigabitEthernet0/2
+        type: physical
+      - id: i4
+        slot: 3
+        label: GigabitEthernet0/3
+        type: physical
+      - id: i5
+        slot: 4
+        label: GigabitEthernet1/0
+        type: physical
+      - id: i6
+        slot: 5
+        label: GigabitEthernet1/1
+        type: physical
+  - id: n18
+    label: A-SW3
+    node_definition: iosvl2
+    x: 50
+    y: 0
+    configuration: |-
+      Building configuration...
+
+      Current configuration : 3974 bytes
+      !
+      ! Last configuration change at 01:59:07 UTC Tue Dec 1 2020
+      !
+      version 15.2
+      service timestamps debug datetime msec
+      service timestamps log datetime msec
+      no service password-encryption
+      service compress-config
+      !
+      hostname A-SW3
+      !
+      boot-start-marker
+      boot-end-marker
+      !
+      !
+      vrf definition Mgmt-intf
+       !
+       address-family ipv4
+       exit-address-family
+       !
+       address-family ipv6
+       exit-address-family
+      !
+      no logging console
+      enable secret 5 $1$InvM$tcRbM.2vwMVeALIAkZAwP.
+      enable password cisco
+      !
+      username admin password 0 cisco123
+      no aaa new-model
+      !
+      !
+      !
+      !
+      !
+      vtp domain virl.lab
+      vtp mode transparent
+      !
+      !
+      !
+      no ip domain-lookup
+      ip cef
+      no ipv6 cef
+      !
+      !
+      !
+      spanning-tree mode pvst
+      spanning-tree extend system-id
+      !
+      !
+      vlan 2
+       name ank_vlan2
+      !
+      vlan 40
+       name USERS
+      !
+      vlan 60
+       name VOIP
+      !
+      vlan 100
+       name MGMT
+      !
+      !
+      !
+      !
+      !
+      !
+      !
+      !
+      !
+      !
+      !
+      !
+      !
+      !
+      interface Loopback0
+       description to
+       no ip address
+       shutdown
+      !
+      interface GigabitEthernet0/0
+       description to GigabitEthernet1/0.C-SW3
+       switchport trunk encapsulation dot1q
+       switchport mode trunk
+       duplex full
+       no negotiation auto
+      !
+      interface GigabitEthernet0/1
+       description to GigabitEthernet1/0.C-SW4
+       switchport trunk encapsulation dot1q
+       switchport mode trunk
+       duplex full
+       no negotiation auto
+      !
+      interface GigabitEthernet0/2
+       description to port14.unmanaged-switch-0
+       no switchport
+       vrf forwarding Mgmt-intf
+       ip address 10.10.20.33 255.255.255.0
+       duplex full
+       no negotiation auto
+       no cdp enable
+      !
+      interface GigabitEthernet0/3
+       description to
+       no switchport
+       no ip address
+       shutdown
+       duplex full
+       no negotiation auto
+      !
+      interface Vlan100
+       ip address 10.20.100.10 255.255.255.0
+      !
+      ip default-gateway 10.20.100.1
+      ip forward-protocol nd
+      !
+      no ip http server
+      no ip http secure-server
+      !
+      ip route 0.0.0.0 0.0.0.0 10.20.100.1
+      ip route vrf Mgmt-intf 0.0.0.0 0.0.0.0 10.10.20.254
+      ip ssh server algorithm encryption aes128-ctr aes192-ctr aes256-ctr
+      ip ssh client algorithm encryption aes128-ctr aes192-ctr aes256-ctr
+      !
+      !
+      !
+      !
+      !
+      !
+      control-plane
+      !
+      banner exec ^CCC
+      **************************************************************************
+      * IOSv is strictly limited to use for evaluation, demonstration and IOS  *
+      * education. IOSv is provided as-is and is not supported by Cisco's      *
+      * Technical Advisory Center. Any use or disclosure, in whole or in part, *
+      * of the IOSv Software or Documentation to any third party for any       *
+      * purposes is expressly prohibited except as otherwise authorized by     *
+      * Cisco in writing.                                                      *
+      **************************************************************************^C
+      banner incoming ^CCC
+      **************************************************************************
+      * IOSv is strictly limited to use for evaluation, demonstration and IOS  *
+      * education. IOSv is provided as-is and is not supported by Cisco's      *
+      * Technical Advisory Center. Any use or disclosure, in whole or in part, *
+      * of the IOSv Software or Documentation to any third party for any       *
+      * purposes is expressly prohibited except as otherwise authorized by     *
+      * Cisco in writing.                                                      *
+      **************************************************************************^C
+      banner login ^CCC
+      **************************************************************************
+      * IOSv is strictly limited to use for evaluation, demonstration and IOS  *
+      * education. IOSv is provided as-is and is not supported by Cisco's      *
+      * Technical Advisory Center. Any use or disclosure, in whole or in part, *
+      * of the IOSv Software or Documentation to any third party for any       *
+      * purposes is expressly prohibited except as otherwise authorized by     *
+      * Cisco in writing.                                                      *
+      **************************************************************************^C
+      !
+      line con 0
+       exec-timeout 0 0
+       password cisco
+      line aux 0
+      line vty 0 4
+       exec-timeout 720 0
+       password cisco
+       login local
+       transport input telnet ssh
+      line vty 5 16
+       login local
+      !
+      !
+      end
+    image_definition: iosvl2-2019
+    tags: []
+    interfaces:
+      - id: i0
+        label: Loopback0
+        type: loopback
+      - id: i1
+        slot: 0
+        label: GigabitEthernet0/0
+        type: physical
+      - id: i2
+        slot: 1
+        label: GigabitEthernet0/1
+        type: physical
+      - id: i3
+        slot: 2
+        label: GigabitEthernet0/2
+        type: physical
+      - id: i4
+        slot: 3
+        label: GigabitEthernet0/3
+        type: physical
+  - id: n19
+    label: A-SW4
+    node_definition: iosvl2
+    x: 50
+    y: 150
+    configuration: |-
+      Building configuration...
+
+      Current configuration : 4579 bytes
+      !
+      ! Last configuration change at 02:06:39 UTC Tue Dec 1 2020
+      !
+      version 15.2
+      service timestamps debug datetime msec
+      service timestamps log datetime msec
+      no service password-encryption
+      service compress-config
+      !
+      hostname A-SW4
+      !
+      boot-start-marker
+      boot-end-marker
+      !
+      !
+      vrf definition Mgmt-intf
+       !
+       address-family ipv4
+       exit-address-family
+       !
+       address-family ipv6
+       exit-address-family
+      !
+      no logging console
+      enable secret 5 $1$1A6K$.1wYppBKtGKuxyWCMWxyh/
+      enable password cisco
+      !
+      username admin password 0 cisco123
+      no aaa new-model
+      !
+      !
+      !
+      !
+      !
+      vtp domain virl.lab
+      vtp mode transparent
+      !
+      !
+      !
+      no ip domain-lookup
+      ip cef
+      no ipv6 cef
+      !
+      !
+      !
+      spanning-tree mode pvst
+      spanning-tree extend system-id
+      !
+      !
+      vlan 2
+       name ank_vlan2
+      !
+      vlan 40
+       name USERS
+      !
+      vlan 60
+       name VOIP
+      !
+      vlan 100
+       name MGMT
+      !
+      !
+      !
+      !
+      !
+      !
+      !
+      !
+      !
+      !
+      !
+      !
+      !
+      !
+      interface Loopback0
+       description to
+       no ip address
+       shutdown
+      !
+      interface GigabitEthernet0/0
+       description to port15.unmanaged-switch-0
+       no switchport
+       vrf forwarding Mgmt-intf
+       ip address 10.10.20.34 255.255.255.0
+       duplex full
+       no negotiation auto
+       no cdp enable
+      !
+      interface GigabitEthernet0/1
+       description to
+       no switchport
+       no ip address
+       shutdown
+       duplex full
+       no negotiation auto
+      !
+      interface GigabitEthernet0/2
+       description to
+       no switchport
+       no ip address
+       shutdown
+       duplex full
+       no negotiation auto
+      !
+      interface GigabitEthernet0/3
+       description to
+       no switchport
+       no ip address
+       shutdown
+       duplex full
+       no negotiation auto
+      !
+      interface GigabitEthernet1/0
+       description to GigabitEthernet1/1.C-SW3
+       switchport trunk encapsulation dot1q
+       switchport mode trunk
+       duplex full
+       no negotiation auto
+      !
+      interface GigabitEthernet1/1
+       description to GigabitEthernet1/1.C-SW4
+       switchport trunk encapsulation dot1q
+       switchport mode trunk
+       duplex full
+       no negotiation auto
+      !
+      interface GigabitEthernet1/2
+       description to
+       no switchport
+       no ip address
+       shutdown
+       duplex full
+       no negotiation auto
+      !
+      interface GigabitEthernet1/3
+       description to
+       no switchport
+       no ip address
+       shutdown
+       duplex full
+       no negotiation auto
+      !
+      interface GigabitEthernet2/0
+       description to
+       no switchport
+       no ip address
+       shutdown
+       duplex full
+       no negotiation auto
+      !
+      interface Vlan100
+       ip address 10.20.100.11 255.255.255.0
+      !
+      ip default-gateway 10.20.100.1
+      ip forward-protocol nd
+      !
+      no ip http server
+      no ip http secure-server
+      !
+      ip route 0.0.0.0 0.0.0.0 10.20.100.1
+      ip route vrf Mgmt-intf 0.0.0.0 0.0.0.0 10.10.20.254
+      ip ssh server algorithm encryption aes128-ctr aes192-ctr aes256-ctr
+      ip ssh client algorithm encryption aes128-ctr aes192-ctr aes256-ctr
+      !
+      !
+      !
+      !
+      !
+      !
+      control-plane
+      !
+      banner exec ^CCC
+      **************************************************************************
+      * IOSv is strictly limited to use for evaluation, demonstration and IOS  *
+      * education. IOSv is provided as-is and is not supported by Cisco's      *
+      * Technical Advisory Center. Any use or disclosure, in whole or in part, *
+      * of the IOSv Software or Documentation to any third party for any       *
+      * purposes is expressly prohibited except as otherwise authorized by     *
+      * Cisco in writing.                                                      *
+      **************************************************************************^C
+      banner incoming ^CCC
+      **************************************************************************
+      * IOSv is strictly limited to use for evaluation, demonstration and IOS  *
+      * education. IOSv is provided as-is and is not supported by Cisco's      *
+      * Technical Advisory Center. Any use or disclosure, in whole or in part, *
+      * of the IOSv Software or Documentation to any third party for any       *
+      * purposes is expressly prohibited except as otherwise authorized by     *
+      * Cisco in writing.                                                      *
+      **************************************************************************^C
+      banner login ^CCC
+      **************************************************************************
+      * IOSv is strictly limited to use for evaluation, demonstration and IOS  *
+      * education. IOSv is provided as-is and is not supported by Cisco's      *
+      * Technical Advisory Center. Any use or disclosure, in whole or in part, *
+      * of the IOSv Software or Documentation to any third party for any       *
+      * purposes is expressly prohibited except as otherwise authorized by     *
+      * Cisco in writing.                                                      *
+      **************************************************************************^C
+      !
+      line con 0
+       exec-timeout 0 0
+       password cisco
+      line aux 0
+      line vty 0 4
+       exec-timeout 720 0
+       password cisco
+       login local
+       transport input telnet ssh
+      line vty 5 16
+       login local
+      !
+      !
+      end
+    image_definition: iosvl2-2019
+    tags: []
+    interfaces:
+      - id: i0
+        label: Loopback0
+        type: loopback
+      - id: i1
+        slot: 0
+        label: GigabitEthernet0/0
+        type: physical
+      - id: i2
+        slot: 1
+        label: GigabitEthernet0/1
+        type: physical
+      - id: i3
+        slot: 2
+        label: GigabitEthernet0/2
+        type: physical
+      - id: i4
+        slot: 3
+        label: GigabitEthernet0/3
+        type: physical
+      - id: i5
+        slot: 4
+        label: GigabitEthernet1/0
+        type: physical
+      - id: i6
+        slot: 5
+        label: GigabitEthernet1/1
+        type: physical
+      - id: i7
+        slot: 6
+        label: GigabitEthernet1/2
+        type: physical
+      - id: i8
+        slot: 7
+        label: GigabitEthernet1/3
+        type: physical
+      - id: i9
+        slot: 8
+        label: GigabitEthernet2/0
+        type: physical
+  - id: n5
+    label: core
+    node_definition: iosv
+    x: -450
+    y: 50
+    configuration: |-
+      Building configuration...
+
+      Current configuration : 4191 bytes
+      !
+      ! Last configuration change at 01:58:03 UTC Tue Dec 1 2020
+      !
+      version 15.8
+      service timestamps debug datetime msec
+      service timestamps log datetime msec
+      no service password-encryption
+      !
+      hostname core
+      !
+      boot-start-marker
+      boot-end-marker
+      !
+      !
+      no logging console
+      enable secret 5 $1$sziz$C8tUlewwoBbuiJS1qAHGr1
+      enable password cisco
+      !
+      no aaa new-model
+      !
+      !
+      !
+      mmi polling-interval 60
+      no mmi auto-configure
+      no mmi pvc
+      mmi snmp-timeout 180
+      !
+      !
+      !
+      !
+      !
+      !
+      !
+      !
+      ip vrf Mgmt-intf
+      !
+      !
+      !
+      !
+      no ip domain lookup
+      ip domain name virl.info
+      ip cef
+      no ipv6 cef
+      !
+      multilink bundle-name authenticated
+      !
+      !
+      !
+      !
+      username cisco privilege 15 secret 5 $1$dCjW$2CnYjI5ePPTzXQvfAL2dN/
+      username admin password 0 cisco123
+      !
+      redundancy
+      !
+      no cdp run
+      !
+      !
+      !
+      !
+      !
+      !
+      !
+      !
+      !
+      !
+      !
+      !
+      !
+      !
+      interface Loopback0
+       description to
+       ip address 7.7.7.7 255.255.255.255
+      !
+      interface GigabitEthernet0/0
+       description to GigabitEthernet2.RT1
+       ip address 192.168.0.1 255.255.255.252
+       duplex auto
+       speed auto
+       media-type rj45
+      !
+      interface GigabitEthernet0/1
+       description to GigabitEthernet2.RT2
+       ip address 192.168.1.1 255.255.255.252
+       duplex auto
+       speed auto
+       media-type rj45
+      !
+      interface GigabitEthernet0/2
+       description to GigabitEthernet1.RT5
+       ip address 192.168.4.1 255.255.255.252
+       duplex auto
+       speed auto
+       media-type rj45
+      !
+      interface GigabitEthernet0/3
+       description to GigabitEthernet2.RT4
+       ip address 192.168.3.1 255.255.255.252
+       duplex auto
+       speed auto
+       media-type rj45
+      !
+      interface GigabitEthernet0/4
+       description to GigabitEthernet2.RT3
+       ip address 192.168.2.1 255.255.255.252
+       duplex auto
+       speed auto
+       media-type rj45
+      !
+      interface GigabitEthernet0/5
+       description to GigabitEthernet1.RT6
+       ip address 192.168.5.1 255.255.255.0
+       duplex auto
+       speed auto
+       media-type rj45
+      !
+      interface GigabitEthernet0/6
+       description to port8.unmanaged-switch-0
+       ip vrf forwarding Mgmt-intf
+       ip address 10.10.20.27 255.255.255.0
+       duplex auto
+       speed auto
+       media-type rj45
+      !
+      ip forward-protocol nd
+      !
+      !
+      no ip http server
+      no ip http secure-server
+      ip route vrf Mgmt-intf 0.0.0.0 0.0.0.0 10.10.20.254
+      ip ssh server algorithm authentication password
+      !
+      ipv6 ioam timestamp
+      !
+      !
+      !
+      control-plane
+      !
+      banner exec ^CCC
+      **************************************************************************
+      * IOSv is strictly limited to use for evaluation, demonstration and IOS  *
+      * education. IOSv is provided as-is and is not supported by Cisco's      *
+      * Technical Advisory Center. Any use or disclosure, in whole or in part, *
+      * of the IOSv Software or Documentation to any third party for any       *
+      * purposes is expressly prohibited except as otherwise authorized by     *
+      * Cisco in writing.                                                      *
+      **************************************************************************^C
+      banner incoming ^CCC
+      **************************************************************************
+      * IOSv is strictly limited to use for evaluation, demonstration and IOS  *
+      * education. IOSv is provided as-is and is not supported by Cisco's      *
+      * Technical Advisory Center. Any use or disclosure, in whole or in part, *
+      * of the IOSv Software or Documentation to any third party for any       *
+      * purposes is expressly prohibited except as otherwise authorized by     *
+      * Cisco in writing.                                                      *
+      **************************************************************************^C
+      banner login ^CCC
+      **************************************************************************
+      * IOSv is strictly limited to use for evaluation, demonstration and IOS  *
+      * education. IOSv is provided as-is and is not supported by Cisco's      *
+      * Technical Advisory Center. Any use or disclosure, in whole or in part, *
+      * of the IOSv Software or Documentation to any third party for any       *
+      * purposes is expressly prohibited except as otherwise authorized by     *
+      * Cisco in writing.                                                      *
+      **************************************************************************^C
+      !
+      line con 0
+       exec-timeout 0 0
+       password cisco
+      line aux 0
+      line vty 0 4
+       exec-timeout 720 0
+       password cisco
+       login local
+       transport input telnet ssh
+      line vty 5 16
+       login local
+       transport input none
+      !
+      no scheduler allocate
+      !
+      end
+    image_definition: iosv-158-3
+    tags: []
+    interfaces:
+      - id: i0
+        label: Loopback0
+        type: loopback
+      - id: i1
+        slot: 0
+        label: GigabitEthernet0/0
+        type: physical
+      - id: i2
+        slot: 1
+        label: GigabitEthernet0/1
+        type: physical
+      - id: i3
+        slot: 2
+        label: GigabitEthernet0/2
+        type: physical
+      - id: i4
+        slot: 3
+        label: GigabitEthernet0/3
+        type: physical
+      - id: i5
+        slot: 4
+        label: GigabitEthernet0/4
+        type: physical
+      - id: i6
+        slot: 5
+        label: GigabitEthernet0/5
+        type: physical
+      - id: i7
+        slot: 6
+        label: GigabitEthernet0/6
+        type: physical
+  - id: n8
+    label: unmanaged-switch-0
+    node_definition: unmanaged_switch
+    x: -450
+    y: -250
+    configuration: ''
+    tags: []
+    interfaces:
+      - id: i0
+        slot: 0
+        label: port0
+        type: physical
+      - id: i1
+        slot: 1
+        label: port1
+        type: physical
+      - id: i2
+        slot: 2
+        label: port2
+        type: physical
+      - id: i3
+        slot: 3
+        label: port3
+        type: physical
+      - id: i4
+        slot: 4
+        label: port4
+        type: physical
+      - id: i5
+        slot: 5
+        label: port5
+        type: physical
+      - id: i6
+        slot: 6
+        label: port6
+        type: physical
+      - id: i7
+        slot: 7
+        label: port7
+        type: physical
+      - id: i8
+        slot: 8
+        label: port8
+        type: physical
+      - id: i9
+        slot: 9
+        label: port9
+        type: physical
+      - id: i10
+        slot: 10
+        label: port10
+        type: physical
+      - id: i11
+        slot: 11
+        label: port11
+        type: physical
+      - id: i12
+        slot: 12
+        label: port12
+        type: physical
+      - id: i13
+        slot: 13
+        label: port13
+        type: physical
+      - id: i14
+        slot: 14
+        label: port14
+        type: physical
+      - id: i15
+        slot: 15
+        label: port15
+        type: physical
+  - id: n11
+    label: ext-conn-0
+    node_definition: external_connector
+    x: -700
+    y: -250
+    configuration: bridge0
+    tags: []
+    interfaces:
+      - id: i0
+        slot: 0
+        label: port
+        type: physical
+links:
+  - id: l1
+    i1: i2
+    n1: n0
+    i2: i5
+    n2: n2
+  - id: l2
+    i1: i5
+    n1: n15
+    i2: i6
+    n2: n1
+  - id: l3
+    i1: i6
+    n1: n15
+    i2: i6
+    n2: n2
+  - id: l0
+    i1: i1
+    n1: n0
+    i2: i5
+    n2: n1
+  - id: l4
+    i1: i3
+    n1: n1
+    i2: i1
+    n2: n3
+  - id: l5
+    i1: i3
+    n1: n2
+    i2: i1
+    n2: n4
+  - id: l6
+    i1: i1
+    n1: n1
+    i2: i1
+    n2: n2
+  - id: l7
+    i1: i2
+    n1: n1
+    i2: i2
+    n2: n2
+  - id: l14
+    i1: i1
+    n1: n18
+    i2: i5
+    n2: n16
+  - id: l15
+    i1: i2
+    n1: n18
+    i2: i5
+    n2: n17
+  - id: l16
+    i1: i5
+    n1: n19
+    i2: i6
+    n2: n16
+  - id: l17
+    i1: i6
+    n1: n19
+    i2: i6
+    n2: n17
+  - id: l18
+    i1: i3
+    n1: n3
+    i2: i3
+    n2: n4
+  - id: l19
+    i1: i1
+    n1: n16
+    i2: i1
+    n2: n17
+  - id: l20
+    i1: i2
+    n1: n16
+    i2: i2
+    n2: n17
+  - id: l21
+    i1: i3
+    n1: n16
+    i2: i1
+    n2: n9
+  - id: l22
+    i1: i3
+    n1: n17
+    i2: i1
+    n2: n10
+  - id: l23
+    i1: i3
+    n1: n9
+    i2: i3
+    n2: n10
+  - id: l8
+    i1: i2
+    n1: n3
+    i2: i1
+    n2: n5
+  - id: l9
+    i1: i2
+    n1: n4
+    i2: i2
+    n2: n5
+  - id: l10
+    i1: i1
+    n1: n6
+    i2: i3
+    n2: n5
+  - id: l11
+    i1: i2
+    n1: n10
+    i2: i4
+    n2: n5
+  - id: l24
+    i1: i2
+    n1: n9
+    i2: i5
+    n2: n5
+  - id: l12
+    i1: i0
+    n1: n11
+    i2: i0
+    n2: n8
+  - id: l13
+    i1: i5
+    n1: n0
+    i2: i1
+    n2: n8
+  - id: l26
+    i1: i1
+    n1: n15
+    i2: i2
+    n2: n8
+  - id: l27
+    i1: i7
+    n1: n1
+    i2: i3
+    n2: n8
+  - id: l28
+    i1: i4
+    n1: n3
+    i2: i4
+    n2: n8
+  - id: l29
+    i1: i7
+    n1: n2
+    i2: i5
+    n2: n8
+  - id: l30
+    i1: i4
+    n1: n4
+    i2: i6
+    n2: n8
+  - id: l32
+    i1: i7
+    n1: n5
+    i2: i8
+    n2: n8
+  - id: l33
+    i1: i2
+    n1: n6
+    i2: i9
+    n2: n8
+  - id: l34
+    i1: i4
+    n1: n9
+    i2: i10
+    n2: n8
+  - id: l35
+    i1: i4
+    n1: n10
+    i2: i11
+    n2: n8
+  - id: l36
+    i1: i4
+    n1: n16
+    i2: i12
+    n2: n8
+  - id: l37
+    i1: i4
+    n1: n17
+    i2: i13
+    n2: n8
+  - id: l38
+    i1: i3
+    n1: n18
+    i2: i14
+    n2: n8
+  - id: l39
+    i1: i1
+    n1: n19
+    i2: i15
+    n2: n8
