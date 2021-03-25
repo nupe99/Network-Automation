@@ -1,7 +1,7 @@
-# Network-Automation
+# Automation Scripts
 Variety of network automation scripts
 
-pyATS_testcases - Python based automated test cases for Cisco routers and swtiches
+pyATS_testcases - Python based automated test cases
 
 
 netmiko_scripts - Netmiko python scripts for configuration management
