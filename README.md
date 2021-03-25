@@ -1,5 +1,5 @@
 # Automation Scripts
-Variety of network automation scripts
+
 
 pyATS_testcases - Python based automated test cases
 
